@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "../components/hero/hero.css";
+
+:root {
+  --cream: #f5f2e9;
+  --green: #203d32;
+  --muted: #6c786d;
+  --clay: #bd6848;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--green);
+  font-family: var(--font-sans), sans-serif;
+}
+
+.container {
+  width: 100%;
+  max-width: 80%;
+  margin-inline: auto;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
