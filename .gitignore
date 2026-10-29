@@ -1,6 +1,7 @@
 node_modules/
 .next/
 .next-build/
+.next-brand-check/
 out/
 *.tsbuildinfo
 .DS_Store
@@ -35,3 +36,5 @@ Thumbs.db
 .vscode/
 *.swp
 *.swo
+
+.next-ui/

@@ -5,7 +5,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { createAssembly } from "../src/components/terrarium/assembly-animation.ts";
 
 async function geometryOnlyModel() {
-  const file = await readFile(new URL("../public/assets/terrarium-current.glb", import.meta.url));
+  const file = await readFile(new URL("../../terrarila-be/storage/assets/terrarium-current.glb", import.meta.url));
   const length = file.readUInt32LE(12);
   const json = JSON.parse(file.subarray(20, 20 + length).toString());
   // CPU test uses the real node/geometry/animation data. Texture rendering is

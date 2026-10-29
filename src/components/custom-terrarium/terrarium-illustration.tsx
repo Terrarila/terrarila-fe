@@ -16,7 +16,7 @@ export function TerrariumIllustration({ selection, options, thumbnail = false }:
       alt={thumbnail ? "" : glass.name}
       fill
       loading="eager"
-      unoptimized={glass.src.startsWith("https://")}
+      unoptimized={/^https?:\/\//.test(glass.src)}
       sizes={thumbnail ? "68px" : "(max-width: 760px) 44vw, (max-width: 1200px) 30vw, 450px"}
       className={styles.illustration}
     />
@@ -26,7 +26,7 @@ export function TerrariumIllustration({ selection, options, thumbnail = false }:
 // A single thumbnail renderer is shared by options and the selected-material list.
 export function MaterialThumbnail({ option, sizes = "68px" }: { option: MaterialOption; sizes?: string }) {
   return <span className={styles.materialImage} aria-hidden="true">
-    {option.src ? <Image src={option.src} alt="" fill unoptimized={option.src.startsWith("https://")} sizes={sizes} className={styles.illustration} /> : <span className={styles.missingImage}>Chưa có ảnh</span>}
+    {option.src ? <Image src={option.src} alt="" fill unoptimized={/^https?:\/\//.test(option.src)} sizes={sizes} className={styles.illustration} /> : <span className={styles.missingImage}>Chưa có ảnh</span>}
   </span>;
 }
 
@@ -60,7 +60,7 @@ export function MaterialImageDialog({ option, onClose }: { option: MaterialOptio
     </div>
     {option?.src ? <div className={styles.expandedImage}>
       {loadedSource !== option.src || failedSource === option.src ? <p className={styles.imageLoading} role="status">{failedSource === option.src ? "Không thể tải ảnh. Vui lòng đóng và mở lại." : "Đang tải ảnh…"}</p> : null}
-      <Image key={option.src} src={option.src} alt={option.name} fill unoptimized={option.src.startsWith("https://")} loading="eager" sizes="(max-width: 760px) calc(94vw - 32px), (max-width: 1024px) calc(94vw - 48px), 912px" className={styles.illustration}
+      <Image key={option.src} src={option.src} alt={option.name} fill unoptimized={/^https?:\/\//.test(option.src)} loading="eager" sizes="(max-width: 760px) calc(94vw - 32px), (max-width: 1024px) calc(94vw - 48px), 912px" className={styles.illustration}
         onLoad={() => { setLoadedSource(option.src ?? null); setFailedSource(null); }}
         onError={() => setFailedSource(option.src ?? null)}
       />

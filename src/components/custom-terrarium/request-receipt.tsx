@@ -17,7 +17,7 @@ export function RequestReceipt({ id, contacts, initialReceipt, initialError }: {
     finally { if (!signal?.aborted) setLoading(false); }
   }
   return <main className={styles.receipt}>
-    <Link href="/" className={styles.brand}>terralá</Link>
+    <Link href="/" className={styles.brand}>Petite Terre</Link>
     <p className={styles.eyebrow}>THIẾT KẾ THEO YÊU CẦU</p>
     <h1>{receipt ? "Shop đã nhận thiết kế của bạn." : "Yêu cầu của bạn"}</h1>
     {loading ? <p role="status">Đang kiểm tra trạng thái…</p> : null}

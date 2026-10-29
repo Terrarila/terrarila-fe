@@ -12,8 +12,8 @@ const serif = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Terralá · Một khu rừng thành hình",
-  description: "Từng lớp sỏi, đất, rêu và lá hồng tạo nên một góc rừng nhỏ trong bể kính terralá.",
+  title: "Petite Terre | Terrarium Studio",
+  description: "Từng lớp sỏi, đất, rêu và lá hồng tạo nên một góc rừng nhỏ trong bể kính Petite Terre.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

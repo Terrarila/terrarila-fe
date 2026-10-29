@@ -20,7 +20,7 @@
   gap: 24px;
 }
 
-.brand { display: inline-flex; align-items: center; gap: 16px; width: fit-content; font: 400 42px/1 var(--font-serif), serif; }
+.brand { display: inline-flex; align-items: center; gap: 16px; width: fit-content; white-space: nowrap; font: 400 36px/1 var(--font-serif), serif; }
 .leaf { width: 14px; height: 25px; flex-shrink: 0; border-radius: 50%; background: #c66b43; transform: rotate(28deg); }
 .desktopNav { display: flex; align-items: center; gap: 36px; font-size: 14px; }
 .desktopNav a { padding-block: 12px; }
@@ -62,10 +62,10 @@
 .mobileNav a { padding-block: 20px; border-bottom: 1px solid #d8ded2; font-size: 19px; }
 .drawerCustomLink { width: 100%; }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
   .header { height: 70px; }
   .headerContent { grid-template-columns: 1fr auto; }
-  .brand { font-size: 32px; gap: 12px; }
+  .brand { font-size: clamp(24px, 5.2vw, 32px); gap: 12px; }
   .leaf { width: 11px; height: 20px; }
   .desktopNav, .customLink { display: none; }
   .menuButton { display: inline-flex; }

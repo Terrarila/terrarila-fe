@@ -1,6 +1,6 @@
-# terralá · Một khu rừng thành hình
+# Petite Terre · Một khu rừng thành hình
 
-Landing page Next.js chuyển từ bản thử nghiệm `terrarium-motion`. Hero 3D và timeline theo scroll giữ nguyên; các section portfolio, bể có sẵn, custom, câu chuyện và footer triển khai theo file Figma “Terralá — Landing page review”. Có thêm trang thiết kế theo yêu cầu `/lam-theo-yeu-cau`, với preview ảnh bể và danh sách vật liệu tương tác. Chưa có checkout, backend hay dashboard.
+Landing page Next.js chuyển từ bản thử nghiệm `terrarium-motion`. Hero 3D và timeline theo scroll giữ nguyên; các section portfolio, bể có sẵn, custom, câu chuyện và footer triển khai theo file Figma tham chiếu của project. Có thêm trang thiết kế theo yêu cầu `/lam-theo-yeu-cau`, với preview ảnh bể và danh sách vật liệu tương tác. Chưa có checkout, backend hay dashboard.
 
 ## Chạy local
 
@@ -8,6 +8,10 @@ Landing page Next.js chuyển từ bản thử nghiệm `terrarium-motion`. Hero
 npm ci
 npm run dev -- --port 3000
 ```
+
+Cần chạy BE trước (port 4000) để tải ảnh/model. FE proxy `/assets/*` đến `TERRALA_ASSET_URL`, hoặc `TERRALA_API_URL`, mặc định `http://127.0.0.1:4000`. Đây phải là origin không có path. Đổi cấu hình thì restart Next. Production cũng cần proxy `/assets` hoặc CDN phù hợp. Chi tiết [MEDIA.md](../terrarila-be/docs/MEDIA.md).
+
+Test animation đọc GLB thật trong repo BE ở folder liền kề; clone cả hai repo khi chạy test.
 
 Mở http://127.0.0.1:3000. Node.js 22.18 đã được dùng để kiểm tra; Next.js yêu cầu Node >=20.9.
 
@@ -45,7 +49,8 @@ TERRALA_BUILD_DIR=.next-build npm run start -- --port 3001
 - `terrarium-model.tsx`: tải GLB, clone node, áp material và sample animation bằng mixer.
 - `assembly-animation.ts`: giữ track position/rotation gốc; đổi scale ẩn/hiện thành visibility rời rạc để vật liệu giữ kích thước khi rơi. Cho phép seek ngược sau frame cuối và bind lại sau cleanup của Strict Mode.
 - `model-materials.ts`: clone material trước khi chỉnh để không làm thay đổi cache GLB; lá giữ texture/màu hồng, kính dùng MeshPhysicalMaterial nhẹ.
-- `public/assets/`: GLB nguyên bản và ảnh concept.
+- `../terrarila-be/storage/assets/`: GLB nguyên bản và ảnh website; FE proxy `/assets` sang BE.
+- `../terrarila-be/reference/fe-docs/`: ảnh chụp tài liệu/kiểm thử trước đây ở FE docs.
 - `tests/`: kiểm tra timeline và animation trên geometry/node/track của GLB thật.
 - `scripts/browser-check.py`: kiểm tra tương tác với `agent-browser` đã mở tại local URL; không phải dependency của website.
 
@@ -59,7 +64,7 @@ Kính: metalness 0, roughness .08, opacity .14, clearcoat .35, depthWrite false,
 
 ## Nguồn asset
 
-Asset landing ở `public/assets/landing/` được tải trực tiếp từ Figma. Một ảnh triptych được dùng chung cho sáu card với width 300% và offset 0%, -100%, -200% theo crop trong thiết kế; không tạo ba bản sao của ảnh. Ảnh story và SVG lá của logo footer cũng giữ nguyên nguồn Figma. Màu nền theo yêu cầu: portfolio forest `#203d32`, collection ivory `#f7f4ec`, custom sage `#dde4d5`, story ivory; footer forest như design.
+Asset landing ở `../terrarila-be/storage/assets/landing/` được tải trực tiếp từ Figma. Một ảnh triptych được dùng chung cho sáu card với width 300% và offset 0%, -100%, -200% theo crop trong thiết kế; không tạo ba bản sao của ảnh. Ảnh story và SVG lá của logo footer cũng giữ nguyên nguồn Figma. Màu nền theo yêu cầu: portfolio forest `#203d32`, collection ivory `#f7f4ec`, custom sage `#dde4d5`, story ivory; footer forest như design.
 
 Figma chưa có URL đích cho các CTA. Nút xem portfolio/collection và câu chuyện mở nội dung trong dialog ngay trên landing; nút custom mở lựa chọn liên hệ, chưa có form đặt hàng hoặc nhận cọc. Gắn địa chỉ shop chính thức qua hai biến môi trường server `TERRALA_MESSENGER_URL` và `TERRALA_ZALO_URL`. Khi chưa cấu hình, nút liên hệ hiển thị thông báo chờ cập nhật, không chuyển đến tài khoản giả. Giá và tên bể hiện là nội dung từ thiết kế, chưa kết nối tồn kho.
 
@@ -93,3 +98,5 @@ Xem [VALIDATION.md](./VALIDATION.md) để biết các kiểm tra đã chạy. M
 - `terrarium-builder.module.css`: desktop full width 60/40, preview sticky 100dvh; mobile preview sticky trên, các bước dưới. Không dùng `.container` và không tải Three.js trên route này.
 
 Vật liệu là danh sách minh hoạ để review trải nghiệm. Cần cập nhật theo tồn kho thực tế trước khi dùng bán hàng. Bản thiết kế hiện ở state của trang, chưa lưu qua reload; nút sao chép giúp gửi nội dung cho shop. Link liên hệ chỉ hiện khi đã có `TERRALA_MESSENGER_URL` / `TERRALA_ZALO_URL`.
+
+Section Bể có sẵn đọc sản phẩm published từ `/v1/products`, có ảnh chính từ `images[0]` và ảnh hover tùy chọn `highlightImageUrl`. Không dùng lại ảnh highlight cố định cho sản phẩm chưa cấu hình; portfolio giữ cách hiển thị hiện tại. Trang chủ render động để không đóng băng danh mục hoặc trạng thái lỗi API khi build.

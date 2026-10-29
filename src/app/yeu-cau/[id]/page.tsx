@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { backend } from "@/lib/terrala-api";
 import { RequestReceipt, type Receipt } from "@/components/custom-terrarium/request-receipt";
 import { shopContacts } from "@/lib/shop-contacts";
-export const metadata: Metadata = { title: "Yêu cầu của bạn · Terralá", robots: { index: false, follow: false }, referrer: "same-origin" };
+export const metadata: Metadata = { title: "Yêu cầu của bạn · Petite Terre", robots: { index: false, follow: false }, referrer: "same-origin" };
 export default async function RequestPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   let receipt: Receipt | null = null;

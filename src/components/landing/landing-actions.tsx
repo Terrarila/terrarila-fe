@@ -39,9 +39,9 @@ export function ContactAction({ channel, href, variant = "forest", product }: {
   product?: string;
 }) {
   const label = `${channel} →`;
-  if (href) return <a className={`${styles.action} ${styles[variant]}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={product ? `Hỏi mua ${product} qua ${channel}` : `Liên hệ Terralá qua ${channel}`}>{label}</a>;
+  if (href) return <a className={`${styles.action} ${styles[variant]}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={product ? `Hỏi mua ${product} qua ${channel}` : `Liên hệ Petite Terre qua ${channel}`}>{label}</a>;
 
   return <ModalAction label={label} title={`Liên hệ qua ${channel}`} variant={variant}>
-    <p className={styles.dialogText}>Thông tin liên hệ của Terralá đang được cập nhật. Vui lòng quay lại sau.</p>
+    <p className={styles.dialogText}>Thông tin liên hệ của Petite Terre đang được cập nhật. Vui lòng quay lại sau.</p>
   </ModalAction>;
 }

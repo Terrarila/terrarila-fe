@@ -5,13 +5,13 @@ import Link from "next/link";
 import styles from "./site-header.module.css";
 
 const navigation = [
-  { href: "#collection", label: "Bể có sẵn" },
-  { href: "#portfolio", label: "Bể đã làm" },
-  { href: "#story", label: "Về chúng tôi" },
+  { href: "/#collection", label: "Bể có sẵn" },
+  { href: "/#portfolio", label: "Bể đã làm" },
+  { href: "/about-us", label: "Về chúng tôi" },
 ];
 
 function NavigationLinks({ onNavigate }: { onNavigate?: () => void }) {
-  return navigation.map(({ href, label }) => <a key={href} href={href} onClick={onNavigate}>{label}</a>);
+  return navigation.map(({ href, label }) => <Link key={href} href={href} onClick={onNavigate}>{label}</Link>);
 }
 
 function MenuIcon({ close = false }: { close?: boolean }) {
@@ -62,7 +62,7 @@ export function SiteHeader() {
       }
     };
     const onScroll = () => { if (!frame) frame = requestAnimationFrame(updateVisibility); };
-    const desktop = window.matchMedia("(min-width: 1001px)");
+    const desktop = window.matchMedia("(min-width: 1201px)");
     const onResize = () => { if (desktop.matches) closeDrawer(); };
     window.addEventListener("scroll", onScroll, { passive: true });
     desktop.addEventListener("change", onResize);
@@ -76,9 +76,9 @@ export function SiteHeader() {
 
   return <header ref={headerRef} className={styles.header} data-hidden="false">
     <div className={`container ${styles.headerContent}`}>
-      <a className={styles.brand} href="#top" aria-label="terralá — về đầu trang">
-        <span className={styles.leaf} aria-hidden="true" />terralá
-      </a>
+      <Link className={styles.brand} href="/" aria-label="Petite Terre — về trang chủ">
+        <span className={styles.leaf} aria-hidden="true" />Petite Terre
+      </Link>
       <nav className={styles.desktopNav} aria-label="Điều hướng chính"><NavigationLinks /></nav>
       <Link className={styles.customLink} href="/lam-theo-yeu-cau">Đặt theo yêu cầu →</Link>
       <button type="button" className={styles.menuButton} aria-label="Mở menu" aria-expanded={open} aria-controls="mobile-menu" onClick={openDrawer}>
@@ -91,7 +91,7 @@ export function SiteHeader() {
       if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) closeDrawer();
     }}>
       <div className={styles.drawerHeading}>
-        <span id="mobile-menu-title" className={styles.drawerTitle}>Khám phá Terralá</span>
+        <span id="mobile-menu-title" className={styles.drawerTitle}>Khám phá Petite Terre</span>
         <button type="button" className={styles.closeButton} aria-label="Đóng menu" onClick={closeDrawer} autoFocus><MenuIcon close /></button>
       </div>
       <nav className={styles.mobileNav} aria-label="Điều hướng mobile"><NavigationLinks onNavigate={closeDrawer} /></nav>

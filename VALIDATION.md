@@ -8,7 +8,7 @@
 - 14 option rêu/cây có nút phóng to bên phải dấu cộng. Button là sibling của label nên mở ảnh không chọn/bỏ vật liệu.
 - Một native dialog dùng chung, chỉ tải ảnh lớn khi mở, có trạng thái tải/lỗi; giữ tỉ lệ ảnh bằng contain. X/Escape/backdrop đóng, khoá cuộn nền khi mở và trả focus về nút preview khi đóng.
 - Đã mở ảnh Rêu Cushion khi chưa chọn rêu: checkbox giữ nguyên; đã chọn rêu rồi mở/đóng vẫn giữ lựa chọn. Cẩm nhung mở đúng ảnh mà không chọn cây.
-- Desktop 1440×1000 và mobile giả lập 390×844/320×667: popup nằm trong viewport, ảnh lớn tải thành công. Screenshot: `docs/material-image-popup-desktop.png`, `docs/material-image-popup-mobile.png`.
+- Desktop 1440×1000 và mobile giả lập 390×844/320×667: popup nằm trong viewport, ảnh lớn tải thành công. Screenshot: `../terrarila-be/reference/fe-docs/material-image-popup-desktop.png`, `../terrarila-be/reference/fe-docs/material-image-popup-mobile.png`.
 - Lint/typecheck/build webpack qua; còn warning có sẵn `complete` của hero fallback. Next compilation issues=[], runtime configErrors/sessionErrors=[].
 
 ## Danh mục sỏi, đất, rêu và cây — 2026-10-19
@@ -17,14 +17,14 @@
 - Có 7 loại rêu, 7 loại cây theo ảnh người dùng cung cấp. Tên Poliona dùng ảnh `peliona.png`. Tổng 18 đường dẫn ảnh đã kiểm tra tồn tại; hai loại đất chưa có ảnh, hiển thị placeholder.
 - Dùng chung `MaterialThumbnail` cho option và vật liệu đã chọn trong panel 60%. Danh sách cuộn riêng khi dài; ảnh bể không ghép vật liệu vào trong.
 - Browser: đã chọn cùng lúc 18 vật liệu (2 sỏi, 2 đất, 7 rêu, 7 cây). Bỏ một rêu còn 6 rêu, không thay đổi 2 sỏi/2 đất. Reset xoá lựa chọn/preview và khoá 4 bước khi chưa chọn bể. Danh sách preview cuộn bằng bàn phím được.
-- Desktop 1440×1000 preview sticky top 0; mobile giả lập 390×844 và 320×667 không tràn ngang. Tất cả ảnh vật liệu tải thành công; thumbnail preview dùng currentSrc 48px ở viewport được đo. Ảnh: `docs/custom-materials-desktop.png`, `docs/custom-materials-mobile.png`.
+- Desktop 1440×1000 preview sticky top 0; mobile giả lập 390×844 và 320×667 không tràn ngang. Tất cả ảnh vật liệu tải thành công; thumbnail preview dùng currentSrc 48px ở viewport được đo. Ảnh: `../terrarila-be/reference/fe-docs/custom-materials-desktop.png`, `../terrarila-be/reference/fe-docs/custom-materials-mobile.png`.
 - Lint/typecheck/build webpack qua, còn warning có sẵn prop `complete` của hero fallback. Next compilation issues=[], configErrors/sessionErrors=[]. Chưa kiểm tra thiết bị mobile thật.
 
 ## Preview bằng ảnh bể — 2026-10-19
 
 - Hai lựa chọn: Bể vuông (`cubic-square.png`, 407×406), Bể chữ nhật ngang (`horizontal-retangle.png`, 530×318). Dùng chung ảnh/dữ liệu cho thumbnail và preview bằng next/image, giữ tỉ lệ, có sizes.
 - Đã bỏ SVG trên trang custom. Vật liệu chọn nằm thành danh sách dọc bên ngoài ảnh; đổi bể giữ lựa chọn vật liệu, bỏ cây cập nhật danh sách, reset xoá cả preview và vật liệu.
-- Đã kiểm tra Chrome desktop 1440×1000, mobile giả lập 390×844 và 320×667; không tràn ngang. Desktop vẫn grid 864/576 và preview sticky. Ảnh kiểm tra: `docs/custom-photo-desktop.png`, `docs/custom-photo-mobile.png`.
+- Đã kiểm tra Chrome desktop 1440×1000, mobile giả lập 390×844 và 320×667; không tràn ngang. Desktop vẫn grid 864/576 và preview sticky. Ảnh kiểm tra: `../terrarila-be/reference/fe-docs/custom-photo-desktop.png`, `../terrarila-be/reference/fe-docs/custom-photo-mobile.png`.
 - Typecheck/build webpack thành công; lint còn một warning có sẵn về `complete` trong fallback hero. Next dev compilation issues = [], runtime configErrors/sessionErrors = [].
 
 ## Trang thiết kế theo yêu cầu — 2026-10-12
@@ -34,7 +34,7 @@
 - Đã chọn bể lục giác + nền tự nhiên + đá núi + rêu gối + dương xỉ + lá hồng bằng input/bàn phím; preview có đủ 5 lớp. Nút sao chép báo thành công; reset bỏ toàn bộ input/layer và khoá lại 4 bước vật liệu trước khi chọn bể.
 - SVG dùng clipPath ID riêng cho mỗi thumbnail/preview. Vật liệu vào bằng opacity/translateY, không animate scale; reduced motion tắt animation.
 - Lint 0 lỗi, còn warning có sẵn `complete` trong hero fallback. Typecheck và production build webpack thành công. Next dev compilation issues = [], runtime configErrors/sessionErrors = [].
-- Screenshot production: `docs/custom-desktop.png`, `docs/custom-mobile.png`.
+- Screenshot production: `../terrarila-be/reference/fe-docs/custom-desktop.png`, `../terrarila-be/reference/fe-docs/custom-mobile.png`.
 - Giới hạn: minh hoạ SVG, chưa có ảnh vật liệu tách lớp; chưa xác nhận tồn kho/giá, chưa lưu đơn hay lựa chọn qua reload. Mobile mới giả lập trên Chrome desktop, chưa kiểm tra điện thoại thật.
 
 ## Menu responsive — 2026-10-09
@@ -45,16 +45,16 @@
 - Native dialog giữ focus trong drawer; CSS tắt transition khi prefers-reduced-motion. Chưa kiểm tra điện thoại thật hay Safari phiên bản cũ.
 - Phiên headless của công cụ kiểm tra giữ animation currentTime ở 0; đã đối chiếu lại bằng Chrome có cửa sổ, animation hoàn tất bình thường. React DevTools extension có lỗi sau HMR; kiểm tra cuối qua navigation mới và production.
 - Lint: 0 lỗi, 1 warning có sẵn về prop `complete`; typecheck và production build webpack thành công. Next dev compilation không có issues.
-- Ảnh: `docs/header-desktop.png`, `docs/header-mobile-drawer.png`.
+- Ảnh: `../terrarila-be/reference/fe-docs/header-desktop.png`, `../terrarila-be/reference/fe-docs/header-mobile-drawer.png`.
 
 ## Điều chỉnh container chung — 2026-10-07
 
 - Menu, hero, 4 section và footer dùng cùng class global `.container`, `max-width: 80%`, `margin-inline: auto`. Các khung section/menu/hero không dùng padding ngang.
 - Đo trên production: viewport 1440px → container 1152px, lề 144px; 390px → 312px, lề 39px; 320px → 256px, lề 32px. Cả 7 container cùng kích thước. Không tràn ngang ở 320px, 390px, 1024px và 1440px.
-- Đã xem desktop portfolio, mobile collection/footer/hero và tablet story/footer. Screenshot: `docs/container-80-desktop.jpg`, `docs/container-80-mobile.jpg`.
+- Đã xem desktop portfolio, mobile collection/footer/hero và tablet story/footer. Screenshot: `../terrarila-be/reference/fe-docs/container-80-desktop.jpg`, `../terrarila-be/reference/fe-docs/container-80-mobile.jpg`.
 - Lint: 0 lỗi, còn warning có sẵn về prop `complete` không dùng trong fallback hero. Typecheck và production build webpack thành công. Không thay đổi logic animation hay model.
 
-# Kiểm tra bản landing terralá
+# Kiểm tra bản landing Petite Terre
 
 Ngày kiểm tra: 07/10/2026. Môi trường: macOS, Node 22.18, npm 11.7; Chromium desktop do agent-browser quản lý và browser tích hợp trong Codex.
 
@@ -68,7 +68,7 @@ Ngày kiểm tra: 07/10/2026. Môi trường: macOS, Node 22.18, npm 11.7; Chrom
 - Browser tích hợp: desktop 1440×1000; mobile 390×844 và 320×740. Đã xem portfolio, collection, custom, story, footer; viewport mobile không tràn ngang. Đây là kiểm tra layout trên Mac, không phải kiểm tra thiết bị di động thật.
 - Đã mở gallery portfolio/collection, nội dung story, CTA custom và thông báo liên hệ chưa cấu hình; đóng bằng nút × hoặc Escape và kiểm tra focus trở về nút mở. Native dialog được căn giữa và có vùng cuộn khi nội dung dài.
 - Checksum của toàn bộ source hero/3D không đổi. So sánh chuỗi CSS cũ với globals + hero.css cho kết quả giống nguyên trạng (ngoại trừ dòng import mới).
-- Ảnh mới: `docs/landing-portfolio-desktop.jpg`, `docs/landing-story-footer-desktop.jpg`, `docs/landing-collection-mobile.jpg`, `docs/landing-footer-mobile.jpg`.
+- Ảnh mới: `../terrarila-be/reference/fe-docs/landing-portfolio-desktop.jpg`, `../terrarila-be/reference/fe-docs/landing-story-footer-desktop.jpg`, `../terrarila-be/reference/fe-docs/landing-collection-mobile.jpg`, `../terrarila-be/reference/fe-docs/landing-footer-mobile.jpg`.
 - Chưa có URL Messenger/Zalo chính thức; Figma không chứa hyperlink/reaction cho các CTA. Nút contact có thông báo chờ cập nhật. Custom mới mở lựa chọn liên hệ, chưa có luồng gửi đơn/cọc; nút xem bộ sưu tập/câu chuyện mở nội dung có sẵn trong dialog.
 - Link `#reference` trong header là chi tiết có sẵn từ trước, hiện chưa có section tương ứng; giữ nguyên header/hero theo phạm vi yêu cầu.
 
@@ -137,3 +137,25 @@ TERRALA_URL=http://127.0.0.1:3001 python3 scripts/browser-check.py
 ```
 
 Script lưu screenshot tạm trong `/tmp` và report React render trong `/tmp/terrala-playback-render-report.json`. Test WebGL mất context và lỗi download đã được kiểm tra riêng, không nằm trong script assertion cơ bản.
+
+## About Us · 27/10/2026
+
+- Thêm `/about-us` với title “Petite Terre | Riêng một góc trời.” căn giữa, đúng nội dung người dùng cung cấp. Hai section desktop dùng hai cột bằng nhau và đảo phía vùng ảnh; các vùng ảnh để trống. Mobile 390×844 xếp nội dung trước vùng ảnh trong mỗi section.
+- Header “Về chúng tôi” và CTA câu chuyện trên landing nối tới route mới; các link collection/portfolio có tiền tố `/` để quay về đúng anchor trang chủ từ trang con. Logo header trở về `/`.
+- `npm run typecheck` PASS. `npm run lint` không có lỗi, còn 3 warnings unused có sẵn ở các file builder/form/fallback.
+- Route trả HTTP 200; xác nhận một H1 đúng tiêu đề và hai section. Đã xem Chrome desktop cả hai section, kiểm tra viewport 390×844: tiêu đề căn giữa, đoạn văn không tràn ngang. Chưa kiểm tra trên điện thoại vật lý.
+- Dev server Next.js hiện báo cảnh báo bảo mật của phiên bản 16.4.0 và dừng ở lần khởi động đầu; lần chạy lại tiếp tục được. Không đổi dependencies trong phạm vi tạo trang.
+
+## Asset chuyển BE · 28/10/2026
+
+Ảnh/model phục vụ qua Next rewrite /assets đến BE. 11/11 test (đọc GLB thật trong repo BE liền kề), typecheck đạt; lint 0 lỗi và 3 cảnh báo unused có sẵn. Ảnh rock/soi-trang tải qua FE3000 HTTP200, cùng bytes file BE. Manifest chuyển file ở ../terrarila-be/docs/ASSET-MOVE-MANIFEST.json.
+
+Production build riêng `.next-build` đạt sau khi retry thông báo của Next; Next 16.4.0 vẫn báo lỗ hổng phiên bản và khuyến nghị nâng cấp bảo mật. Chưa đổi dependency trong phạm vi chuyển media. `next/image` tối ưu ảnh qua rewrite trả HTTP200; GLB qua FE hỗ trợ Range206.
+
+Chrome xác nhận trang builder mở ảnh Rêu Quyển Bá đầy đủ từ BE; Next diagnostics trả issues=[], configErrors=[], sessionErrors=[] tại thời điểm kiểm tra.
+
+## Ảnh highlight bể bán sẵn · 28/10/2026
+
+Migration 013 đã áp PostgreSQL local. BE 23/23 API tests đạt, kiểm tra tạo/đọc/xóa tham chiếu highlight, URL không hợp lệ và revision. Admin 15/15 tests đạt, gồm upload highlight riêng với gallery và gửi đúng If-Match. FE 11/11 tests đạt; typecheck/build cả ba đạt, lint BE/FE không lỗi (FE còn 3 warning unused cũ). Next 16.4.0 nhắc nâng cấp bảo mật; build hoàn tất sau retry.
+
+Chrome smoke test trên DB demo riêng: chọn PNG highlight bằng file dialog, upload và lưu thành công; public API trả đúng URL; FE hiển thị ảnh chính trước hover và ảnh có chú thích khi hover. FE thật đọc sản phẩm published từ API, không gắn ảnh hover cố định khi highlight null. Không thay ảnh hoặc giá của sản phẩm trong PostgreSQL thật.

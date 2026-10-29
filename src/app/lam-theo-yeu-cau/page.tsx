@@ -3,7 +3,7 @@ import { TerrariumBuilder } from "@/components/custom-terrarium/terrarium-builde
 import { DesignProvider } from "@/store/design-provider";
 import { loadBuilderCatalog } from "@/lib/builder-catalog";
 import { shopContacts } from "@/lib/shop-contacts";
-export const metadata: Metadata = { title: "Thiết kế bể theo yêu cầu · Terralá", description: "Chọn bể kính, sỏi, đất, rêu và cây để tạo một khu vườn nhỏ mang dấu ấn của bạn." };
+export const metadata: Metadata = { title: "Thiết kế bể theo yêu cầu · Petite Terre", description: "Chọn bể kính, sỏi, đất, rêu và cây để tạo một khu vườn nhỏ mang dấu ấn của bạn." };
 export default async function CustomTerrariumPage() {
   const catalog = await loadBuilderCatalog();
   return <DesignProvider catalog={catalog}><TerrariumBuilder contacts={shopContacts()} catalog={catalog} /></DesignProvider>;

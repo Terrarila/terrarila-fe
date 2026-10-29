@@ -33,27 +33,39 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
   }
 
   async function copySelection() {
-    const text = `Tôi muốn làm một bể Terralá theo yêu cầu:\n${chosen.map((item) => `• ${item.name}`).join("\n")}${note.trim() ? `\nGhi chú: ${note.trim()}` : ""}`;
+    const text = `Tôi muốn làm một bể Petite Terre theo yêu cầu:\n${chosen.map((item) => `• ${item.name}`).join("\n")}${note.trim() ? `\nGhi chú: ${note.trim()}` : ""}`;
     try { await navigator.clipboard.writeText(text); setStatus("Đã sao chép. Bạn có thể gửi lựa chọn này cho shop."); }
     catch { setStatus("Chưa sao chép được. Bạn có thể chọn và sao chép phần tóm tắt bên dưới."); }
   }
 
   return <main className={styles.builder}>
     <aside className={styles.previewPanel} aria-label="Minh hoạ bể của bạn">
-      <div className={styles.previewTop}><Link href="/" className={styles.brand}><span aria-hidden="true" />terralá</Link><Link href="/" className={styles.back}>← Về trang chủ</Link></div>
+      <div className={styles.previewTop}><Link href="/" className={styles.brand}><span aria-hidden="true" />Petite Terre</Link><Link href="/" className={styles.back}>← Về trang chủ</Link></div>
       <div className={styles.previewHeading}>
         <p className={styles.eyebrow}>THIẾT KẾ THEO Ý BẠN</p>
         {/* <h1>Một góc xanh.<br />Mang dấu ấn của bạn.</h1> */}
         <p>Chọn dáng bể và những vật liệu cho khu vườn của bạn.</p></div>
       <div className={styles.previewCanvas}>
-        <TerrariumIllustration selection={selection} options={steps.find(step => step.key === "glass")?.options ?? []} />
-        {materials.length > 0 ? <section className={styles.selectedMaterials} aria-label="Vật liệu đã chọn" tabIndex={0}>
-          <h2>Vật liệu đã chọn</h2>
-          <ul>{materials.map((item) => <li key={`${item.key}-${item.id}`} className={styles.materialLayer}>
-            <span className={styles.selectedThumbnail}><MaterialThumbnail option={item} sizes="(max-width: 760px) 36px, 48px" /></span>
-            <span className={styles.selectedCopy}><span>{item.category}</span><strong>{item.name}</strong></span>
-          </li>)}</ul>
-        </section> : null}
+        <TerrariumIllustration
+          selection={selection}
+          options={steps.find(step => step.key === "glass")?.options ?? []}
+        />
+        {materials.length > 0 ? (
+          <section className={styles.selectedMaterials} aria-label="Vật liệu đã chọn" tabIndex={0}>
+            <h2>Vật liệu đã chọn</h2>
+            <ul>
+              {materials.map((item) => <li key={`${item.key}-${item.id}`} className={styles.materialLayer}>
+                <span className={styles.selectedThumbnail}>
+                  <MaterialThumbnail option={item} sizes="(max-width: 760px) 36px, 48px" />
+                </span>
+                <span className={styles.selectedCopy}>
+                  <span>{item.category}</span>
+                  <strong>{item.name}</strong>
+                </span>
+              </li>)}
+            </ul>
+          </section>
+        ) : null}
       </div>
       <div className={styles.previewBottom}>
         <span>{selection.glass ? "Bể kính bạn đã chọn" : "Bắt đầu bằng một chiếc bể kính"}</span>
@@ -67,11 +79,18 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
         <p className={styles.eyebrow}>CÙNG TẠO MỘT KHU VƯỜN NHỎ</p>
         <h2>Bể của bạn,<br />từng chút một.</h2>
         <p>Chọn những điều bạn thích. Bạn có thể đổi lựa chọn ở bất kỳ bước nào.</p>
-        <p className={styles.stockNote}>Các dáng bể trong bộ sưu tập Terralá. Shop sẽ xác nhận tình trạng bể, cây và vật liệu khi tư vấn.</p>
+        <p className={styles.stockNote}>Các dáng bể trong bộ sưu tập Petite Terre. Shop sẽ xác nhận tình trạng bể, cây và vật liệu khi tư vấn.</p>
       </div>
       <fieldset className={styles.step}>
-        <legend><span className={styles.stepNumber}>KHÔNG BẮT BUỘC</span><span className={styles.stepTitle}>Chọn bể mẫu</span></legend>
-        <p className={styles.stepDescription}>Bắt đầu từ một mẫu có sẵn hoặc tự chọn từ Bước 1. Chọn mẫu sẽ thay toàn bộ vật liệu, giữ ghi chú; bạn có thể chỉnh tiếp bên dưới.</p>
+        <legend>
+          <span className={styles.stepNumber}>
+            KHÔNG BẮT BUỘC
+          </span>
+          <span className={styles.stepTitle}>Chọn bể mẫu</span>
+        </legend>
+        <p className={styles.stepDescription}>
+          Bắt đầu từ một mẫu có sẵn hoặc tự chọn từ Bước 1. Chọn mẫu sẽ thay toàn bộ vật liệu, giữ ghi chú; bạn có thể chỉnh tiếp bên dưới.
+        </p>
         {!catalog.presetsReady ? <p className={styles.stepDescription} role="status">Chưa tải được bể mẫu. Bạn vẫn có thể tự chọn từng vật liệu bên dưới.</p> : !catalog.presets.length ? <p className={styles.stepDescription}>Shop đang chuẩn bị thêm bể mẫu. Bạn có thể tự chọn từ Bước 1.</p> : null}
         <div className={styles.options}>{catalog.presets.map(preset => {
           const recipe = presetSelection(preset, catalog);
@@ -80,8 +99,26 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
             if (!recipe) return;
             dispatch(applyPreset(recipe)); setShowForm(false); setStatus(`Đã áp dụng ${preset.name}. Bạn có thể chỉnh vật liệu bên dưới.`);
           }}>
-            <span className={styles.presetImage}><Image src={preset.imageUrl} alt={preset.name} fill sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1200px) 40vw, 25vw" /></span>
-            <span className={styles.presetCopy}><strong>{preset.name}</strong>{preset.isDemo ? <span className={styles.presetBadge}>Mẫu demo</span> : null}<span>{preset.description}</span><span>{recipe ? preset.materials.map(material => material.name).join(" · ") : "Mẫu tạm chưa dùng được với danh mục hiện tại."}</span><span>{selected ? "✓ Đang dùng cấu hình này" : recipe ? "Dùng mẫu này →" : "Tạm chưa thể chọn"}</span></span>
+            <span className={styles.presetImage}>
+              <Image
+                src={preset.imageUrl}
+                unoptimized={/^https?:\/\//.test(preset.imageUrl)}
+                alt={preset.name}
+                fill
+                sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1200px) 40vw, 25vw"
+              />
+            </span>
+            <span className={styles.presetCopy}>
+              <strong>{preset.name}</strong>
+              {preset.isDemo ? <span className={styles.presetBadge}>Mẫu demo</span> : null}
+              <span>{preset.description}</span>
+              <span>
+                {recipe ? preset.materials.map(material => material.name).join(" · ") : "Mẫu tạm chưa dùng được với danh mục hiện tại."}
+              </span>
+              <span>
+                {selected ? "✓ Đang dùng cấu hình này" : recipe ? "Dùng mẫu này →" : "Tạm chưa thể chọn"}
+              </span>
+            </span>
           </button>;
         })}</div>
       </fieldset>
@@ -92,19 +129,39 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
           <span className={styles.stepTitle}>{step.title}</span>
         </legend>
         <p className={styles.stepDescription}>{step.description}</p>
-        {step.key === "moss" ? <p id="moss-selection-limit" className={styles.selectionCount} role="status">Đã chọn {selection.moss.length}{mossMax === null ? "" : `/${mossMax}`} loại rêu.</p> : null}
+        {step.key === "moss" ? (
+          <p
+            id="moss-selection-limit"
+            className={styles.selectionCount}
+            role="status"
+          >
+            Đã chọn {selection.moss.length}{mossMax === null ? "" : `/${mossMax}`} loại rêu.
+          </p>
+        ) : null}
         <div className={styles.options}>{step.options.map((option) => {
           const selected = isSelected(selection, step.key, option.id);
           const apiOption = catalog.materials.find(item => item.category === step.key && item.legacyId === option.id);
           const unavailable = catalog.ready && (!apiOption || apiOption.availability === "unavailable");
-          const atLimit = step.selectionMode !== "single" && !selected && step.maxSelections !== null && (step.key === "glass" ? Number(!!selection.glass) : selection[step.key].length) >= step.maxSelections;
+          const atLimit =
+            step.selectionMode !== "single" && !selected && step.maxSelections !== null && (step.key === "glass" ?
+              Number(!!selection.glass)
+              : selection[step.key].length) >= step.maxSelections;
           return <div className={styles.option} key={option.id}>
             <label className={styles.optionLabel}>
-              <input type={step.selectionMode === "single" ? "radio" : "checkbox"} name={step.key} value={option.id} checked={selected} disabled={!selected && (atLimit || unavailable)} aria-describedby={step.key === "moss" ? "moss-selection-limit" : undefined} onChange={() => choose(step.key, option.id)} />
+              <input
+                type={step.selectionMode === "single" ? "radio" : "checkbox"}
+                name={step.key}
+                value={option.id}
+                checked={selected}
+                disabled={!selected && (atLimit || unavailable)}
+                aria-describedby={step.key === "moss" ? "moss-selection-limit" : undefined}
+                onChange={() => choose(step.key, option.id)}
+              />
               <span className={styles.thumbnail}><MaterialThumbnail option={option} /></span>
               <span className={styles.optionCopy}>
                 <strong>{option.name}</strong>
-                {option.detail ? <span>{option.detail}</span> : null}{unavailable ? <span>Tạm chưa nhận lựa chọn này</span> : null}
+                {option.detail ? <span>{option.detail}</span> : null}
+                {unavailable ? <span>Tạm chưa nhận lựa chọn này</span> : null}
               </span>
               <span className={styles.check} aria-hidden="true">
                 {selected ? "✓" : "+"}
@@ -131,18 +188,64 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
         <h2 id="selection-title">Khu vườn bạn đã chọn</h2>
         {chosen.length ? <ul>{chosen.map((item) => <li key={`${item.key}-${item.name}`}>{item.name}</li>)}</ul> : <p>Chọn bể kính để bắt đầu bản thiết kế.</p>} */}
         <label className={styles.noteLabel} htmlFor="design-note">Bạn muốn thêm điều gì?</label>
-        <textarea id="design-note" value={note} onChange={(event) => dispatch(changeNote(event.target.value))} maxLength={1000} placeholder="Ví dụ: một góc rừng có lá hồng, đặt trên bàn làm việc…" rows={3} />
-        <div className={styles.priceSummary} aria-live="polite"><span>Giá dự kiến</span><strong>{estimate === null ? "Shop xác nhận báo giá" : formatVnd(estimate)}</strong><p>Shop xác nhận vật liệu, phí giao và giá cuối cùng trước khi bạn đặt cọc.</p></div>
-        {!catalog.ready ? <p role="status">Chưa kết nối được danh mục của shop. Bạn vẫn có thể lưu thiết kế hoặc sao chép để nhắn shop; tải lại trang để thử kết nối.</p> : null}
-        {showForm ? <DesignRequestForm catalog={catalog} onClose={() => setShowForm(false)} /> : <button type="button" className={styles.primaryAction} disabled={!selection.glass || !catalog.ready} onClick={() => setShowForm(true)}>Gửi thiết kế để shop xác nhận →</button>}
+        <textarea
+          id="design-note"
+          value={note}
+          onChange={(event) => dispatch(changeNote(event.target.value))}
+          maxLength={1000}
+          placeholder="Ví dụ: một góc rừng có lá hồng, đặt trên bàn làm việc…"
+          rows={3}
+        />
+        <div className={styles.priceSummary} aria-live="polite">
+          <span>Giá dự kiến</span>
+          <strong>
+            {estimate === null ? "Shop xác nhận báo giá" : formatVnd(estimate)}
+          </strong>
+          <p>Shop xác nhận vật liệu, phí giao và giá cuối cùng trước khi bạn đặt cọc.</p>
+        </div>
+        {!catalog.ready ? (
+          <p role="status">
+            Chưa kết nối được danh mục của shop. Bạn vẫn có thể lưu thiết kế hoặc sao chép để nhắn shop; tải lại trang để thử kết nối.
+          </p>
+        ) : null}
+        {showForm ? (
+          <DesignRequestForm catalog={catalog} onClose={() => setShowForm(false)} />
+        ) : (
+          <button
+            type="button"
+            className={styles.primaryAction}
+            disabled={!selection.glass || !catalog.ready}
+            onClick={() => setShowForm(true)}>
+            Gửi thiết kế để shop xác nhận →
+          </button>
+        )}
         {/* <p className={styles.savedNote}>Lựa chọn và ghi chú được tự động lưu trên trình duyệt này.</p>
         <button type="button" className={styles.reset} disabled={!selection.glass} onClick={copySelection}>Sao chép lựa chọn</button> */}
         <div className={styles.contacts}>
-          {contacts.map((contact) => <a key={contact.label} href={contact.href} target="_blank" rel="noopener noreferrer">Nhắn qua {contact.label} ↗</a>)}
+          {contacts.map((contact) => (
+            <a
+              key={contact.label}
+              href={contact.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Nhắn qua {contact.label} ↗
+            </a>
+          ))}
         </div>
         <p className={styles.status} role="status">{status}</p>
         {/* <p className={styles.summaryNote}>Gửi lựa chọn cho shop để được tư vấn và báo giá trước khi đặt làm.</p> */}
-        <button type="button" className={styles.reset} onClick={() => { dispatch(resetDesign()); setShowForm(false); setStatus("Đã bắt đầu lại bản thiết kế."); }}>Bắt đầu lại</button>
+        <button
+          type="button"
+          className={styles.reset}
+          onClick={() => {
+            dispatch(resetDesign());
+            setShowForm(false);
+            setStatus("Đã bắt đầu lại bản thiết kế.");
+          }}
+        >
+          Bắt đầu lại
+        </button>
       </section>
     </div>
     <MaterialImageDialog option={preview} onClose={() => setPreview(null)} />
