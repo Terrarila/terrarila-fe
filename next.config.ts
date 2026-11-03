@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const config: NextConfig = {
   async rewrites() {
+    if (process.env.VERCEL) {
+      for (const key of ["TERRALA_API_URL", "TERRALA_ASSET_URL"] as const) {
+        const value = process.env[key];
+        if (!value) throw new Error(`${key} is required on Vercel`);
+        const configured = new URL(value);
+        if (configured.protocol !== "https:" || configured.pathname !== "/" || configured.username || configured.password || configured.search || configured.hash) {
+          throw new Error(`${key} must be an HTTPS origin`);
+        }
+      }
+    }
     const origin = (
       process.env.TERRALA_ASSET_URL ||
       process.env.TERRALA_API_URL ||

@@ -6,9 +6,12 @@ export async function backend<T>(path: string, init: RequestInit = {}): Promise<
   const base = process.env.TERRALA_API_URL;
   if (!base) throw new ApiError(503, "API_NOT_CONFIGURED");
   try {
+    const headers = new Headers(init.headers);
+    if (!headers.has("Content-Type")) headers.set("Content-Type", "application/json");
+    if (process.env.TERRALA_API_BYPASS_SECRET) headers.set("x-vercel-protection-bypass", process.env.TERRALA_API_BYPASS_SECRET);
     const response = await fetch(`${base.replace(/\/$/, "")}${path}`, {
-      ...init, cache: "no-store", signal: AbortSignal.timeout(10000),
-      headers: { "Content-Type": "application/json", ...init.headers },
+      ...init, redirect: "error", cache: "no-store", signal: AbortSignal.timeout(10000),
+      headers,
     });
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
