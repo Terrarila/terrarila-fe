@@ -24,6 +24,11 @@ export function sanitizeDraft(value: unknown, catalog?: BuilderCatalog): DesignD
       }
     }
   }
+  if (source.selection && typeof source.selection === "object") {
+    const size = (source.selection as Record<string, unknown>).glassSize;
+    const shape = catalog?.materials.find(item => item.category === "glass" && item.legacyId === clean.selection.glass);
+    if (clean.selection.glass && typeof size === "string" && /^[a-z0-9][a-z0-9-]{0,79}$/.test(size) && (!catalog?.ready || shape?.sizes?.some(item => item.legacyId === size))) clean.selection.glassSize = size;
+  }
   clean.note = typeof source.note === "string" ? source.note.slice(0, 1000) : "";
   clean.submissionKey = typeof source.submissionKey === "string" && /^[0-9a-f-]{36}$/i.test(source.submissionKey) ? source.submissionKey : null;
   clean.submissionFingerprint = typeof source.submissionFingerprint === "string" && /^[0-9a-f]{64}$/.test(source.submissionFingerprint) ? source.submissionFingerprint : null;
@@ -35,13 +40,18 @@ const slice = createSlice({
   reducers: {
     chooseMaterial(state, { payload }: PayloadAction<{ key: MaterialKey; id: string; max: number | null; single?: boolean }>) {
       const { key, id, max } = payload;
-      if (key === "glass") state.selection.glass = id;
+      if (key === "glass") { if (state.selection.glass !== id) delete state.selection.glassSize; state.selection.glass = id; }
       else if (payload.single) state.selection[key] = [id];
       else {
         const selected = state.selection[key];
         if (selected.includes(id)) state.selection[key] = selected.filter(value => value !== id);
         else if (max === null || selected.length < max) selected.push(id);
       }
+      state.submissionKey = null; state.submissionFingerprint = null;
+    },
+    chooseGlassSize(state, { payload }: PayloadAction<{ glass: string; id: string }>) {
+      if (state.selection.glass !== payload.glass) return;
+      state.selection.glassSize = payload.id;
       state.submissionKey = null; state.submissionFingerprint = null;
     },
     applyPreset(state, { payload }: PayloadAction<TerrariumSelection>) {
@@ -56,5 +66,5 @@ const slice = createSlice({
     resetDesign: () => emptyDraft(),
   },
 });
-export const { chooseMaterial, applyPreset, reconcileCatalog, changeNote, rememberSubmission, resetDesign } = slice.actions;
+export const { chooseGlassSize, chooseMaterial, applyPreset, reconcileCatalog, changeNote, rememberSubmission, resetDesign } = slice.actions;
 export const designReducer = slice.reducer;

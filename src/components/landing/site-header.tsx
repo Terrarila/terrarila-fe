@@ -5,8 +5,8 @@ import Link from "next/link";
 import styles from "./site-header.module.css";
 
 const navigation = [
-  { href: "/#collection", label: "Bể có sẵn" },
-  { href: "/#portfolio", label: "Bể đã làm" },
+  // { href: "/#collection", label: "Bể có sẵn" },
+  // { href: "/#portfolio", label: "Bể đã làm" },
   { href: "/about-us", label: "Về chúng tôi" },
 ];
 
@@ -77,7 +77,7 @@ export function SiteHeader() {
   return <header ref={headerRef} className={styles.header} data-hidden="false">
     <div className={`container ${styles.headerContent}`}>
       <Link className={styles.brand} href="/" aria-label="Petite Terre — về trang chủ">
-        <span className={styles.leaf} aria-hidden="true" />Petite Terre
+        <span className={styles.brandLogo} aria-hidden="true" />Petite Terre
       </Link>
       <nav className={styles.desktopNav} aria-label="Điều hướng chính"><NavigationLinks /></nav>
       <Link className={styles.customLink} href="/lam-theo-yeu-cau">Đặt theo yêu cầu →</Link>

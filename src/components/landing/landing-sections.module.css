@@ -1,14 +1,8 @@
-/* Section palette is scoped here so the existing hero keeps its own colors. */
+/* Sections, dialogs, header and builder share the global semantic palette. */
 .section,
 .footer,
 .dialog {
-  --forest: #203d32;
-  --ivory: #f7f4ec;
-  --sage: #dde4d5;
-  --clay: #c66b43;
-  --text-muted: #657466;
-  --line: #d8ded2;
-  color: var(--forest);
+  color: var(--color-text);
 }
 
 /* Shared section spacing, headings, and actions. */
@@ -38,7 +32,7 @@
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 2px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-bottom: 32px !important;
 }
 
@@ -50,7 +44,7 @@
 
 .description {
   font-size: 14px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .stackedHeading {
@@ -76,38 +70,55 @@
   font: 500 14px/1.5 var(--font-sans), sans-serif;
   text-align: center;
   cursor: pointer;
-  transition: opacity 150ms;
+  transition: background-color 150ms, border-color 150ms, color 150ms;
 }
 
-.action:hover {
-  opacity: .8;
+.action:not(:disabled):hover {
+  border-color: var(--color-primary);
+}
+
+.outline:not(:disabled):hover {
+  background: var(--color-surface-selected);
+}
+
+.forest:not(:disabled):hover {
+  background: var(--color-primary-hover);
+}
+
+.light:not(:disabled):hover {
+  background: var(--color-surface-selected);
+}
+
+.clay:not(:disabled):hover {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
 }
 
 .action:focus-visible,
 .close:focus-visible {
-  outline: 3px solid var(--clay);
+  outline: 3px solid var(--color-focus);
   outline-offset: 4px;
 }
 
 .outline {
   border-color: currentColor;
-  color: var(--forest);
+  color: var(--color-text);
   background: transparent;
 }
 
 .forest {
-  color: var(--ivory);
-  background: var(--forest);
+  color: var(--color-text-inverse);
+  background: var(--color-primary);
 }
 
 .light {
-  color: var(--forest);
-  background: var(--ivory);
+  color: var(--color-text);
+  background: var(--color-background);
 }
 
 .clay {
-  color: #fff;
-  background: var(--clay);
+  color: var(--color-text-inverse);
+  background: var(--color-accent);
 }
 
 .contactActions {
@@ -185,9 +196,10 @@
 
 .cardTitle {
   display: flex;
+  flex-direction: column;
   align-items: baseline;
   flex-wrap: wrap;
-  gap: 8px 20px;
+  gap: 8px;
 }
 
 .cardTitle h3 {
@@ -198,7 +210,7 @@
 .cardDescription {
   font-size: 10px;
   font-weight: 500;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .price {
@@ -210,8 +222,8 @@
 .productCard {
   padding: 16px;
   border-radius: 20px;
-  background: var(--ivory);
-  border: 1px solid var(--line);
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
   gap: 16px;
 }
 
@@ -247,8 +259,8 @@
 
 /* Requested background order: forest → ivory → sage → ivory. */
 .portfolio {
-  background: var(--forest);
-  color: var(--ivory);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
 }
 
 .portfolio>.sectionContent {
@@ -262,15 +274,15 @@
 .portfolio .eyebrow,
 .portfolio .description,
 .portfolio .cardDescription {
-  color: var(--sage);
+  color: var(--color-surface-selected);
 }
 
 .portfolio .outline {
-  color: var(--ivory);
+  color: var(--color-text-inverse);
 }
 
 .collection {
-  background: var(--ivory);
+  background: var(--color-background);
   padding-block: 80px;
 }
 
@@ -279,7 +291,7 @@
 }
 
 .custom {
-  background: var(--sage);
+  background: var(--color-surface-selected);
 }
 
 .custom .heading {
@@ -300,13 +312,13 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  border-top: 1px solid #b9c7b5;
+  border-top: 1px solid var(--color-border-control);
   padding-top: 12px;
 }
 
 .stepNumber {
   font: 400 28px/1.5 var(--font-serif), serif;
-  color: var(--clay);
+  color: var(--color-accent);
 }
 
 .customSteps h3 {
@@ -316,11 +328,11 @@
 
 .customSteps p {
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .story {
-  background: var(--ivory);
+  background: var(--color-background);
   padding-block: 72px;
 }
 
@@ -359,14 +371,15 @@
 
 .storyText {
   max-width: 550px;
-  color: var(--forest);
+  color: var(--color-text);
   font-size: 14px;
 }
 
 /* Footer follows the design's typography, spacing, and light capsule actions. */
 .footer {
-  background: var(--forest);
-  color: var(--ivory);
+  --color-focus: var(--color-text-inverse);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
   padding-block: 64px 64px;
 }
 
@@ -390,20 +403,19 @@
   font: 400 44px/1.5 var(--font-serif), serif;
 }
 
-.brandLeaf {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 23.16px;
-  height: 26.88px;
-}
-
-.brandLeaf img {
-  transform: rotate(28deg);
+.brandLogo {
+  display: block;
+  width: 74px;
+  height: 74px;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask: url("/brand/petite-terre-transparent.png") center / contain no-repeat;
+  mask: url("/brand/petite-terre-transparent.png") center / contain no-repeat;
+  mask-mode: alpha;
 }
 
 .footerBrand p {
-  color: var(--sage);
+  color: var(--color-text-inverse-muted);
   font-size: 14px;
 }
 
@@ -428,21 +440,22 @@
 }
 
 .footerContact p {
-  color: var(--sage);
+  color: var(--color-text-inverse-muted);
   font-size: 11px;
 }
 
 .copyright {
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--color-border);
   padding-top: 32px;
   margin-top: 32px !important;
   font-size: 10px;
-  color: var(--sage);
+  color: var(--color-text-inverse-muted);
 }
 
 /* Native dialogs add image viewing/contact actions without new page routes. */
 .dialog {
-  background: var(--ivory);
+  --color-focus: var(--color-accent);
+  background: var(--color-background);
   width: min(1100px, calc(100% - 48px));
   max-height: calc(100svh - 48px);
   margin: auto;
@@ -453,11 +466,11 @@
 }
 
 .dialog .outline {
-  color: var(--forest);
+  color: var(--color-text);
 }
 
 .dialog::backdrop {
-  background: rgb(15 31 24 / 70%);
+  background: var(--color-overlay);
 }
 
 .dialogHeader {
@@ -475,34 +488,34 @@
 
 .close {
   flex-shrink: 0;
-  border: 1px solid var(--line);
+  border: 1px solid var(--color-border);
   background: transparent;
   border-radius: 50%;
   width: 36px;
   height: 36px;
-  color: var(--forest);
+  color: var(--color-text);
   font: 24px/1 var(--font-sans), sans-serif;
   cursor: pointer;
 }
 
 .dialogText {
   font-size: 14px;
-  color: var(--forest);
+  color: var(--color-text);
   margin-block: 24px !important;
 }
 
 .dialogNote {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   margin-top: 16px !important;
 }
 
 .gallery .portfolioCard {
-  color: var(--forest);
+  color: var(--color-text);
 }
 
 .gallery .cardDescription {
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .gallery .action {
@@ -652,3 +665,25 @@
     transition: none;
   }
 }
+@media (max-width: 760px) {
+  .footerBrand a { font-size: 32px; }
+  .brandLogo { width: 48px; height: 48px; }
+}
+
+.close:hover {
+  background: var(--color-surface-selected);
+}
+
+/* Keep contact buttons outside the detail link: no nested interactive controls. */
+.cardDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  min-width: 0;
+  border-radius: 12px;
+}
+.cardDetails:hover h3 { text-decoration: underline; text-underline-offset: 5px; }
+.cardDetails:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 5px; }
+.portfolio { --color-focus: var(--color-text-inverse); }
+.portfolio .outline:hover { color: var(--color-text); }

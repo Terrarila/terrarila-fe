@@ -99,4 +99,24 @@ Xem [VALIDATION.md](./VALIDATION.md) để biết các kiểm tra đã chạy. M
 
 Vật liệu là danh sách minh hoạ để review trải nghiệm. Cần cập nhật theo tồn kho thực tế trước khi dùng bán hàng. Bản thiết kế hiện ở state của trang, chưa lưu qua reload; nút sao chép giúp gửi nội dung cho shop. Link liên hệ chỉ hiện khi đã có `TERRALA_MESSENGER_URL` / `TERRALA_ZALO_URL`.
 
-Section Bể có sẵn đọc sản phẩm published từ `/v1/products`, có ảnh chính từ `images[0]` và ảnh hover tùy chọn `highlightImageUrl`. Không dùng lại ảnh highlight cố định cho sản phẩm chưa cấu hình; portfolio giữ cách hiển thị hiện tại. Trang chủ render động để không đóng băng danh mục hoặc trạng thái lỗi API khi build.
+Section Bể có sẵn đọc sản phẩm published từ `/v1/products`, có ảnh chính từ `images[0]` và ảnh hover tùy chọn `highlightImageUrl`. Không dùng lại ảnh highlight cố định cho sản phẩm chưa cấu hình; PortfolioSection cũng đọc `/v1/portfolio`, gồm mục nhập riêng và bể bán sẵn đã xuất bản. Trang chủ render động để không đóng băng danh mục hoặc trạng thái lỗi API khi build.
+
+Portfolio dùng tên, mô tả, ảnh chính và highlight từ API; không hiển thị giá hay nút mua. Có trạng thái rỗng/lỗi API riêng và tải hết các trang cho dialog “Xem tất cả bể đã làm”.
+
+Builder chọn thêm kích thước sau khi chọn dáng bể kính, lấy size/giá từ API materials. Size có ID vật liệu riêng, được dùng khi gửi yêu cầu; không mặc định chọn thay người dùng. Size cũ được bỏ khi đổi dáng; Redux Persist giữ size hợp lệ khi reload. Giá hiển thị ở mỗi size là giá bể kính, chưa gồm vật liệu/công/ship. Tổng dự kiến vẫn chờ shop xác nhận nếu các giá/đơn vị/chính sách khác chưa đủ. Cần BE migration 014.
+
+Logo thương hiệu dùng file gốc trong `public/brand`: SVG cho header và PNG cho footer. CSS alpha mask cho màu theo chữ (header xanh, footer trắng), giữ file gốc nguyên vẹn. Favicon ở `public/favicon.ico`, khai báo qua metadata `icons` để phục vụ trực tiếp: file ICO có frame PNG RGB không tương thích bộ giải mã metadata ảnh của Next nếu đặt ở `src/app/favicon.ico`.
+
+
+## Trang chi tiết sản phẩm
+
+Route duy nhất: `/products/[slug]`, đọc `GET /v1/products/:slug` (published-only). Section Những bể đã làm và popup xem tất cả dẫn tới sản phẩm khi `sourceProductId` có giá trị; mục portfolio nhập riêng không được suy đoán là sản phẩm và không có route portfolio mới. Card Bể có sẵn và card liên quan cũng dùng link chi tiết. Link có `#top` để tới đầu trang sau khi điều hướng từ section ở cuối landing.
+
+- `src/lib/product-types.ts`: contract sản phẩm/portfolio/card.
+- `src/lib/product-catalog.ts`: server-only API reads, pagination, request-scoped deduplication và phân biệt 404/lỗi kết nối.
+- `src/lib/product-presentation.ts`: mapping card, định dạng giá, gallery và lọc bể liên quan.
+- `src/components/products/`: gallery client nhỏ, thông tin server, card/grid và related server; CSS riêng cho gallery và bố cục chi tiết.
+- `src/components/shared/shop-contact-actions.tsx`: nút liên hệ dùng chung với landing.
+- `src/app/products/[slug]/`: page, layout, metadata, loading, not-found và error/retry.
+
+Trang hiển thị đúng ảnh/mô tả/giá/tình trạng từ API. Giá null giữ thông báo shop xác nhận, không đổi thành 0. Ảnh highlight được thêm cuối gallery nếu chưa có trong danh sách ảnh. Related tối đa 4 sản phẩm available, loại chính sản phẩm đang xem; không suy đoán độ tương đồng theo nhóm khi contract chưa có nhóm. Related lỗi/rỗng có thông báo riêng. Chưa thêm checkout, kích thước ngoài mô tả API hay nội dung chăm sóc tự đặt.

@@ -159,3 +159,47 @@ Chrome xác nhận trang builder mở ảnh Rêu Quyển Bá đầy đủ từ B
 Migration 013 đã áp PostgreSQL local. BE 23/23 API tests đạt, kiểm tra tạo/đọc/xóa tham chiếu highlight, URL không hợp lệ và revision. Admin 15/15 tests đạt, gồm upload highlight riêng với gallery và gửi đúng If-Match. FE 11/11 tests đạt; typecheck/build cả ba đạt, lint BE/FE không lỗi (FE còn 3 warning unused cũ). Next 16.4.0 nhắc nâng cấp bảo mật; build hoàn tất sau retry.
 
 Chrome smoke test trên DB demo riêng: chọn PNG highlight bằng file dialog, upload và lưu thành công; public API trả đúng URL; FE hiển thị ảnh chính trước hover và ảnh có chú thích khi hover. FE thật đọc sản phẩm published từ API, không gắn ảnh hover cố định khi highlight null. Không thay ảnh hoặc giá của sản phẩm trong PostgreSQL thật.
+
+## Portfolio tự động từ sản phẩm · 30/10/2026
+
+GET Portfolio kết hợp mục thủ công với bể bán sẵn published bằng truy vấn trực tiếp, không tạo bản sao hay cần migration. BE 24/24 tests đạt: bản nháp không lộ, sửa nguồn cập nhật ảnh/highlight/nội dung, bỏ xuất bản biến mất, xuất bản lại không trùng, phân trang chung và giữ mục thủ công. Admin 17/17 tests đạt, gồm nhãn nguồn/link chỉnh bể gốc, giữ editor của mục thủ công. FE 11/11 tests, typecheck và build đạt; lint FE 0 lỗi/3 warnings unused có sẵn. Next 16.4.0 vẫn nhắc nâng cấp bảo mật; build đạt sau retry.
+
+Đã rebuild/recreate backend Docker, health/ready thành công; API thật trả 1 bể published và 1 mục Portfolio đồng bộ, cùng tên/ảnh/highlight. Chrome xác nhận Khu vườn đứng hiện trong section Portfolio và dialog Xem tất cả, không kèm giá/nút mua. Kiểm thử thay đổi/bỏ xuất bản chạy trong DB test riêng; dữ liệu sản phẩm thật không bị sửa.
+
+## Size bể kính · 30/10/2026
+
+Migration 014 đã áp lên PostgreSQL local, BE Docker đã rebuild/recreate. Public API giữ 3 dáng bể, trả 9 size con với nhãn/giá đúng danh sách: đứng 150k/150k/120k, Cubic 60k/80k/100k/130k, ngang 90k/110k. ID dáng cũ/preset giữ nguyên. Chọn size gửi ID material con; request snapshot lưu size và giá, quote/order/invoice tính từ DB, không nhận giá từ FE. Không tự xác nhận các giá nguyên liệu/tồn kho khác.
+
+BE typecheck/lint/build/format đạt; 26/26 API tests đạt, gồm snapshot yêu cầu, tính quote theo size, invoice, chặn shape-only, ẩn dáng sau quote và seed giữ giá đã sửa. FE typecheck/build đạt, 14/14 tests đạt (thêm 3 test size/persist/preset); lint 0 lỗi/3 warning unused cũ. Build Next vẫn nhắc nâng cấp bảo mật phiên bản 16.4.0 và đạt sau retry.
+
+Chrome trong cửa sổ kiểm thử riêng xác nhận đúng 3/4/2 size từng dáng, chọn đứng 15×15×25–150k rồi reload vẫn giữ, đổi sang Cubic bỏ size cũ/khóa gửi, chọn ngang 20×10×10 hiển thị 110k. Không gửi yêu cầu thật trong browser. Kiểm tra giao diện qua accessibility; screenshot riêng Incognito gặp lỗi công cụ/capture sai cửa sổ, chưa đánh giá bố cục mobile/thiết bị thật.
+
+## Logo và favicon · 30/10/2026
+
+Đã copy ba file người dùng cung cấp vào FE, đối chiếu SHA-256 giữ nguyên dữ liệu. Header dùng SVG mask màu xanh, footer dùng PNG mask màu trắng; hai icon lá cũ được thay. Favicon phục vụ file ICO gốc từ public và metadata icons (bộ đọc ảnh Next không hỗ trợ PNG RGB bên trong ICO này khi đặt ở app/favicon.ico). Hai logo và favicon HTTP200, favicon tải về khớp hash gốc. Chrome desktop xác nhận header/footer và icon tab hiển thị đúng. Có kích thước responsive; chưa kiểm tra visual mobile riêng. Typecheck/lint đạt (lint còn hai cảnh báo unused có sẵn); production build đạt sau retry cảnh báo bảo mật Next 16.4.0.
+
+## Custom terrarium component unit tests — 2026-10-30
+
+- Added Vitest + React Testing Library with an isolated jsdom environment; existing node:test cases remain available through `test:logic`.
+- 17 component tests cover the real builder and request form with Redux, shape-specific sizes, API selection limits, presets, reset, normalized request payloads, session errors, HTTP errors, concurrent submission locking and idempotent retries.
+- `npm test` runs both suites; `npm run test:unit` runs the component suite. See `tests/README.md` for scope and commands.
+- Typecheck passed; lint passed with three existing unused-variable warnings in production files. Tests do not replace browser visual QA or async server-page integration checks.
+
+## Đồng bộ bảng màu FE · 03/11/2026
+
+- Gom màu UI về semantic tokens trong globals.css; đồng bộ hero, header/drawer, landing/footer/dialog, About, builder/receipt/admin request UI. Giữ màu nội dung 3D và các thay đổi có sẵn trong working tree.
+- Nền kem thống nhất F7F4EC; chữ phụ 526353; accent 984829; hover accent 7E381E; lỗi/required dùng 873B28. Control borders tách khỏi divider trang trí. Bỏ opacity hover của landing CTA, giữ opacity disabled. Footer dùng focus sáng và dialog sáng bên trong đặt lại focus accent. Paragraph hero không còn đặt màu global cho trang khác.
+- Typecheck PASS, lint 0 errors/3 existing unused warnings, 14 logic tests và 17 unit tests PASS. Production build với TERRALA_BUILD_DIR=.next-build PASS; lần chạy sandbox không tiến triển, chạy ngoài sandbox hoàn tất. Next.js 16.4.0 vẫn nhắc cảnh báo bảo mật; không nâng dependency trong thay đổi bảng màu.
+- Next MCP: get_compilation_issues không có issues. Chrome 1280x633 và mobile 390x844: kiểm tra trang chủ, CTA đất nung/hover, footer, popup liên hệ/focus bàn phím, About, builder và menu mobile; xác nhận màu computed CSS và ảnh chụp. Kiểm tra chữ có nội dung trên các view đã duyệt không phát hiện cặp tương phản dưới ngưỡng trong phép đo nền phẳng, không phải chứng nhận WCAG toàn site.
+- Giới hạn runtime môi trường: danh mục API không tải được; /assets/terrarium-current.glb trả 500 qua proxy, hero dùng ảnh fallback và Next MCP ghi nhận lỗi tải GLB. Vì vậy chưa kiểm chứng trực quan toàn bộ các trạng thái builder với danh mục thật hoặc render 3D. Các tình trạng này nằm ngoài phần màu UI.
+- Quy ước/token và tỷ lệ tương phản được ghi tại COLORS.md.
+
+## Trang chi tiết `/products/[slug]` · 03/11/2026
+
+- Chỉ thêm route `/products/[slug]` với layout, page/metadata, loading, not-found và error/retry; không tạo route `/portfolio/[id]` hoặc `/products` index. Đối chiếu trực tiếp public controller/repository BE: detail chỉ đọc published products theo slug; portfolio trả sourceProductId cho sản phẩm đồng bộ.
+- Tách contract, server-only catalog/pagination, presentation helpers, gallery client, product info server, related server, card/grid và contact actions dùng chung. Landing giữ các section hiện có và hover ảnh; card nguồn sản phẩm trong Những bể đã làm/popup và Bể có sẵn dẫn tới detail. Portfolio nhập riêng không được gán một URL sản phẩm không tồn tại. Link có #top để tránh Next giữ vị trí cuộn cuối landing khi sang trang mới.
+- Detail dùng tên/mô tả/giá/availability/gallery từ API; null giá vẫn yêu cầu shop xác nhận. Highlight được thêm vào gallery nếu chưa có. Không thêm kích thước, trạng thái đã bán, chăm sóc hay chính sách tự suy đoán. Related tối đa 4 bể available, loại chính bể hiện tại; có thông báo riêng khi rỗng/lỗi.
+- Typecheck PASS; lint 0 errors/3 existing unused warnings; 14 logic tests và 29 unit tests PASS. Tests mới kiểm tra source links, encode slug, lọc related, gallery/highlight/ảnh thiếu, null giá/availability, nested controls, missing product/API outage, metadata, related lỗi/rỗng và retry. Route tests mock catalog; không thay thế xác minh public API thật.
+- Production build tách output .next-build PASS sau retry của security reminder. Route map chỉ bổ sung /products/[slug]. Next.js 16.4.0 vẫn cảnh báo bảo mật; không nâng dependencies trong phạm vi này.
+- Chrome desktop 1440×1000 và mobile 390×844 với public API local port 4000 thật: đã bấm card Khu vườn ngang từ section Những bể đã làm, kiểm tra tên/giá/ảnh; đổi ảnh thứ hai và xác nhận ảnh tải thành công; related chỉ có Khu vườn đứng và bấm sang đúng slug. Popup Xem tất cả bể đã làm → Khu vườn đứng đóng dialog, scrollY=0. Mobile không tràn ngang. Slug không tồn tại hiện trang Không tìm thấy; title/robots theo dữ liệu. Next MCP get_compilation_issues=[], get_errors không có config/session errors ở detail vừa kiểm tra. React tree có ProductGallery, ProductInfo, RelatedProducts và TerrariumCard.
+- Không sửa dữ liệu shop, không gọi API ghi trong browser smoke. API outage và related rỗng được kiểm tra bằng mocks; không dừng backend thật để giả lập lỗi.

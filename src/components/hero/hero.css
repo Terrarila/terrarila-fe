@@ -21,7 +21,7 @@
 .eyebrow {
   font-size: 11px;
   letter-spacing: 2.6px;
-  color: var(--muted);
+  color: var(--color-text-muted);
 }
 
 h1,
@@ -31,11 +31,9 @@ h1,
   margin: 26px 0;
 }
 
-p {
-  font-size: 15px;
-  line-height: 1.9;
-  color: var(--muted);
-  margin: 1em 0;
+.journey p,
+.reference p {
+  color: var(--color-text-muted);
 }
 
 .hero-description {
@@ -53,24 +51,24 @@ p {
 
 .steps button {
   font: 12px var(--font-sans), sans-serif;
-  color: var(--green);
+  color: var(--color-text);
   background: transparent;
-  border: 1px solid #cdd4c7;
+  border: 1px solid var(--color-border-control);
   border-radius: 30px;
   padding: 10px 14px;
   cursor: pointer;
 }
 
 .steps button.active {
-  background: var(--green);
-  color: var(--cream);
-  border-color: var(--green);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary);
 }
 
 button:focus-visible,
 a:focus-visible,
 input:focus-visible {
-  outline: 3px solid var(--clay);
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
 }
 
@@ -82,7 +80,7 @@ input:disabled {
 
 .hint {
   font-size: 11px;
-  color: var(--muted);
+  color: var(--color-text-muted);
 }
 
 .visual {
@@ -127,7 +125,7 @@ input:disabled {
   right: 12%;
   font-size: 12px;
   text-align: center;
-  background: var(--cream);
+  background: var(--color-background);
   padding: 8px;
   border-radius: 6px;
 }
@@ -146,7 +144,7 @@ input:disabled {
 
 .progress {
   height: 8px;
-  background: #dce1d4;
+  background: var(--color-surface-selected);
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -157,7 +155,7 @@ input:disabled {
   display: block;
   width: 100%;
   height: 100%;
-  background: var(--clay);
+  background: var(--color-accent);
   transform: scaleX(0);
   transform-origin: left;
 }
@@ -172,10 +170,10 @@ input:disabled {
 
 .trial-controls button {
   padding: 10px 16px;
-  border: 1px solid var(--green);
+  border: 1px solid var(--color-text);
   border-radius: 24px;
-  background: var(--green);
-  color: var(--cream);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
   cursor: pointer;
   white-space: nowrap;
   font: 12px var(--font-sans), sans-serif;
@@ -183,7 +181,7 @@ input:disabled {
 
 .trial-controls input {
   width: 100%;
-  accent-color: var(--clay);
+  accent-color: var(--color-accent);
   min-width: 0;
 }
 
@@ -192,7 +190,7 @@ input:disabled {
   display: grid;
   grid-template-columns: 40% 45%;
   gap: 12%;
-  background: #e0e5d7;
+  background: var(--color-surface-alt);
   align-items: center;
 }
 
@@ -213,7 +211,7 @@ input:disabled {
 
 .download {
   display: inline-block;
-  border: 1px solid var(--green);
+  border: 1px solid var(--color-text);
   border-radius: 30px;
   padding: 14px 22px;
   font-size: 13px;
@@ -382,4 +380,14 @@ input:disabled {
 .terrarium-scene-fallback {
   position: absolute;
   inset: 0;
+}
+
+.steps button:not(.active):not(:disabled):hover,
+.download:hover {
+  background: var(--color-surface-selected);
+  border-color: var(--color-primary);
+}
+
+.trial-controls button:not(:disabled):hover {
+  background: var(--color-primary-hover);
 }

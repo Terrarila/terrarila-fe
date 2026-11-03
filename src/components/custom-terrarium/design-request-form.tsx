@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useDesignDispatch, useDesignSelector } from "@/store/design-provider";
 import { rememberSubmission } from "@/store/design-slice";
 import type { BuilderCatalog } from "@/lib/builder-catalog";
+import { selectedApiMaterials } from "./material-catalog";
 import styles from "./terrarium-builder.module.css";
 export function DesignRequestForm({ catalog, onClose }: { catalog: BuilderCatalog; onClose: () => void }) {
   const draft = useDesignSelector(state => state.design);
@@ -17,8 +18,9 @@ export function DesignRequestForm({ catalog, onClose }: { catalog: BuilderCatalo
     if (lock.current) return;
     lock.current = true; setPending(true); setError("");
     const fields = new FormData(event.currentTarget);
-    const materialIds = Object.entries(draft.selection).flatMap(([category, value]) => (typeof value === "string" ? [value] : value).filter(Boolean).map(legacyId => catalog.materials.find(item => item.category === category && item.legacyId === legacyId)?.id));
-    if (materialIds.some(id => !id)) { setError("Một lựa chọn đã thay đổi. Hãy tải lại danh mục trước khi gửi."); setPending(false); lock.current = false; return; }
+    const selected = selectedApiMaterials(draft.selection, catalog);
+    if (!selected) { setError("Vui lòng chọn kích thước phù hợp với bể và kiểm tra lại danh mục trước khi gửi."); setPending(false); lock.current = false; return; }
+    const materialIds = selected.map(item => item.id);
     const payload = {
       materialIds, recipientName: String(fields.get("recipientName")).trim(), phone: String(fields.get("phone")).replace(/[\s().-]/g, ""),
       area: String(fields.get("area")).trim(), ...(fields.get("preferredDate") ? { preferredDate: fields.get("preferredDate") } : {}), note: draft.note.trim(),
@@ -47,11 +49,11 @@ export function DesignRequestForm({ catalog, onClose }: { catalog: BuilderCatalo
     <p>Không cần tạo tài khoản. Shop sẽ trao đổi bố cục, vật liệu, ngày nhận và báo giá trước khi bạn đặt cọc.</p>
     <fieldset disabled={pending}>
       <label htmlFor="recipientName">
-        Tên của bạn <span style={{ color: 'red' }}>*</span>
+        Tên của bạn <span className={styles.requiredField}>*</span>
       </label>
       <input autoFocus id="recipientName" name="recipientName" required minLength={2} maxLength={120} autoComplete="name" />
       <label htmlFor="phone">
-        Zalo / Facebook <span style={{ color: 'red' }}>*</span>
+        Zalo / Facebook <span className={styles.requiredField}>*</span>
       </label>
       <input
         id="phone"
@@ -65,7 +67,7 @@ export function DesignRequestForm({ catalog, onClose }: { catalog: BuilderCatalo
         placeholder="09xxxxxxxx"
       />
       <label htmlFor="area">
-        Khu vực nhận hàng tại TP.HCM <span style={{ color: 'red' }}>*</span>
+        Khu vực nhận hàng tại TP.HCM <span className={styles.requiredField}>*</span>
       </label>
       <input id="area" name="area" required minLength={2} maxLength={160} placeholder="Ví dụ: Thủ Đức, hoặc nhận tại shop" />
       <button className={styles.primaryAction} type="submit">

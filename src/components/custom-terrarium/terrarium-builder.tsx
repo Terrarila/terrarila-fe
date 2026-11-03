@@ -5,12 +5,12 @@ import Image from "next/image";
 import { presetSelection, sameSelection } from "./design-presets";
 import { useState } from "react";
 import { useDesignDispatch, useDesignSelector } from "@/store/design-provider";
-import { chooseMaterial, applyPreset, changeNote, resetDesign } from "@/store/design-slice";
+import { chooseGlassSize, chooseMaterial, applyPreset, changeNote, resetDesign } from "@/store/design-slice";
 import type { BuilderCatalog } from "@/lib/builder-catalog";
 import { estimateSelection, formatVnd } from "./estimate";
 import { DesignRequestForm } from "./design-request-form";
 import { MaterialImageDialog, MaterialThumbnail, TerrariumIllustration } from "./terrarium-illustration";
-import { isSelected, buildSteps, type MaterialKey, type MaterialOption } from "./material-catalog";
+import { selectedGlassSize, isSelected, buildSteps, type MaterialKey, type MaterialOption } from "./material-catalog";
 import styles from "./terrarium-builder.module.css";
 
 export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: string; href: string }[]; catalog: BuilderCatalog }) {
@@ -24,7 +24,11 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
   const [status, setStatus] = useState("");
   const chosen = steps.flatMap((step) => step.options.filter((option) => isSelected(selection, step.key, option.id)).map((option) => ({ ...option, key: step.key, category: step.title })));
   const materials = chosen.filter((item) => item.key !== "glass");
-  const complete = steps.filter((step) => step.options.some((option) => isSelected(selection, step.key, option.id))).length;
+  const glass = catalog.materials.find(item => item.category === "glass" && item.legacyId === selection.glass);
+  const size = selectedGlassSize(selection, catalog);
+  const needsSize = !!(glass?.requiresSize || glass?.sizes?.length);
+  const sizeReady = !needsSize || (!!size && size.availability !== "unavailable" && glass?.availability !== "unavailable");
+  const complete = steps.filter((step) => (step.key !== "glass" || sizeReady) && step.options.some((option) => isSelected(selection, step.key, option.id))).length;
 
   function choose(key: MaterialKey, id: string) {
     dispatch(chooseMaterial({ key, id, max: steps.find(step => step.key === key)?.maxSelections ?? null, single: steps.find(step => step.key === key)?.selectionMode === "single" }));
@@ -32,11 +36,7 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
     setStatus("");
   }
 
-  async function copySelection() {
-    const text = `Tôi muốn làm một bể Petite Terre theo yêu cầu:\n${chosen.map((item) => `• ${item.name}`).join("\n")}${note.trim() ? `\nGhi chú: ${note.trim()}` : ""}`;
-    try { await navigator.clipboard.writeText(text); setStatus("Đã sao chép. Bạn có thể gửi lựa chọn này cho shop."); }
-    catch { setStatus("Chưa sao chép được. Bạn có thể chọn và sao chép phần tóm tắt bên dưới."); }
-  }
+  const RequiredField = () => <span className={styles.requiredField}>*</span>;
 
   return <main className={styles.builder}>
     <aside className={styles.previewPanel} aria-label="Minh hoạ bể của bạn">
@@ -71,15 +71,16 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
         <span>{selection.glass ? "Bể kính bạn đã chọn" : "Bắt đầu bằng một chiếc bể kính"}</span>
         <span>{String(complete).padStart(2, "0")} / {String(steps.length).padStart(2, "0")}</span>
       </div>
-      <p className={styles.previewNote}>Vật liệu được liệt kê bên cạnh bể. Shop sẽ tư vấn bố cục khi bạn đặt làm.</p>
+      {/* <p className={styles.previewNote}>Vật liệu được liệt kê bên cạnh bể. Shop sẽ tư vấn bố cục khi bạn đặt làm.</p> */}
     </aside>
 
     <div className={styles.materialPanel}>
       <div className={styles.intro}>
-        <p className={styles.eyebrow}>CÙNG TẠO MỘT KHU VƯỜN NHỎ</p>
-        <h2>Bể của bạn,<br />từng chút một.</h2>
+        {/* <p className={styles.eyebrow}>CÙNG TẠO MỘT KHU VƯỜN NHỎ</p> */}
+        <h2 className={styles.eyebrow}>Cùng tạo một khu vườn nhỏ</h2>
+        {/* <h2>Bể của bạn,<br />từng chút một.</h2>
         <p>Chọn những điều bạn thích. Bạn có thể đổi lựa chọn ở bất kỳ bước nào.</p>
-        <p className={styles.stockNote}>Các dáng bể trong bộ sưu tập Petite Terre. Shop sẽ xác nhận tình trạng bể, cây và vật liệu khi tư vấn.</p>
+        <p className={styles.stockNote}>Các dáng bể trong bộ sưu tập Petite Terre. Shop sẽ xác nhận tình trạng bể, cây và vật liệu khi tư vấn.</p> */}
       </div>
       <fieldset className={styles.step}>
         <legend>
@@ -126,7 +127,9 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
       {steps.map((step, index) => <fieldset key={step.key} className={styles.step} disabled={step.key !== "glass" && !selection.glass}>
         <legend>
           <span className={styles.stepNumber}>BƯỚC {String(index + 1).padStart(2, "0")}</span>
-          <span className={styles.stepTitle}>{step.title}</span>
+          <span className={styles.stepTitle}>
+            {step.title} <RequiredField />
+          </span>
         </legend>
         <p className={styles.stepDescription}>{step.description}</p>
         {step.key === "moss" ? (
@@ -180,6 +183,23 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
             </button> : null}
           </div>;
         })}</div>
+        {step.key === "glass" && selection.glass && needsSize ? <fieldset className={styles.glassSizes} disabled={glass?.availability === "unavailable"}>
+          <legend>
+            Chọn kích thước {glass?.name.toLocaleLowerCase("vi")} <RequiredField />
+          </legend>
+          <div className={styles.options}>{glass?.sizes?.map(option => <div key={option.id} className={styles.option}>
+            <label className={styles.optionLabel}>
+              <input type="radio" name="glassSize" required value={option.legacyId} checked={selection.glassSize === option.legacyId} disabled={option.availability === "unavailable"} onChange={() => {
+                dispatch(chooseGlassSize({ glass: selection.glass, id: option.legacyId })); setShowForm(false); setStatus("");
+              }} />
+              <span className={styles.optionCopy}>
+                <strong>{option.sizeLabel}</strong>
+              </span>
+              <span className={styles.check} aria-hidden="true">{selection.glassSize === option.legacyId ? "✓" : "+"}</span>
+            </label>
+          </div>)}</div>
+          {/* {!glass?.sizes?.length ? <p role="status">Shop chưa công bố kích thước cho bể này.</p> : !size ? <p className={styles.stepDescription}>Vui lòng chọn một kích thước trước khi gửi thiết kế.</p> : null} */}
+        </fieldset> : null}
       </fieldset>)}
       <section className={styles.summary} aria-labelledby="selection-title">
         {/* <p className={styles.eyebrow}>
@@ -193,7 +213,7 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
           value={note}
           onChange={(event) => dispatch(changeNote(event.target.value))}
           maxLength={1000}
-          placeholder="Ví dụ: một góc rừng có lá hồng, đặt trên bàn làm việc…"
+          placeholder="Ví dụ: Bố cục đổ dọc xuống như tháp rơi tự do…"
           rows={3}
         />
         <div className={styles.priceSummary} aria-live="polite">
@@ -214,7 +234,7 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
           <button
             type="button"
             className={styles.primaryAction}
-            disabled={!selection.glass || !catalog.ready}
+            disabled={!selection.glass || !sizeReady || !catalog.ready}
             onClick={() => setShowForm(true)}>
             Gửi thiết kế để shop xác nhận →
           </button>

@@ -9,12 +9,14 @@ export function presetSelection(preset: ApiDesignPreset, catalog: BuilderCatalog
   const seen = new Set<string>();
   for (const material of preset.materials) {
     const step = steps.find(item => item.key === material.category);
-    const current = catalog.materials.find(item => item.id === material.id);
-    if (!step || !current || current.availability === "unavailable" || current.category !== material.category || current.legacyId !== material.legacyId || seen.has(material.id) || !step.options.some(option => option.id === material.legacyId)) return null;
+    const current = catalog.materials.flatMap(item => [item, ...(item.sizes ?? [])]).find(item => item.id === material.id);
+    const shape = current?.parentMaterialId ? catalog.materials.find(item => item.id === current.parentMaterialId) : current;
+    if (!step || !current || current.availability === "unavailable" || current.category !== material.category || current.legacyId !== material.legacyId || seen.has(material.id) || !shape || !step.options.some(option => option.id === shape.legacyId)) return null;
     seen.add(material.id);
     if (step.key === "glass") {
       if (selection.glass) return null;
-      selection.glass = material.legacyId;
+      selection.glass = shape.legacyId;
+      if (current.parentMaterialId) selection.glassSize = current.legacyId;
     } else selection[step.key].push(material.legacyId);
   }
   if (!selection.glass) return null;
@@ -26,5 +28,5 @@ export function presetSelection(preset: ApiDesignPreset, catalog: BuilderCatalog
   return selection;
 }
 export function sameSelection(left: TerrariumSelection, right: TerrariumSelection) {
-  return materialKeys.every(key => key === "glass" ? left.glass === right.glass : left[key].length === right[key].length && left[key].every(id => right[key].includes(id)));
+  return (left.glassSize ?? "") === (right.glassSize ?? "") && materialKeys.every(key => key === "glass" ? left.glass === right.glass : left[key].length === right[key].length && left[key].every(id => right[key].includes(id)));
 }

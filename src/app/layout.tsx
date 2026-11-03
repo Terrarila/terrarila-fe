@@ -12,6 +12,8 @@ const serif = localFont({
 });
 
 export const metadata: Metadata = {
+  // Serve the supplied ICO unchanged; its RGB PNG frames cannot be decoded by Next's image metadata loader.
+  icons: { icon: [{ url: "/favicon.ico", type: "image/x-icon", sizes: "any" }] },
   title: "Petite Terre | Terrarium Studio",
   description: "Từng lớp sỏi, đất, rêu và lá hồng tạo nên một góc rừng nhỏ trong bể kính Petite Terre.",
 };

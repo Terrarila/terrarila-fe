@@ -14,7 +14,7 @@ export default function Home() {
       <PortfolioSection />
       <AvailableTerrariumsSection />
       <CustomTerrariumSection />
-      <AboutTerralaSection />
+      {/* <AboutTerralaSection /> */}
     </main>
     <SiteFooter />
   </>;

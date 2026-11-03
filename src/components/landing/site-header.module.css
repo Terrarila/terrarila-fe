@@ -3,14 +3,19 @@
   inset: 0 0 auto;
   z-index: 20;
   height: 88px;
-  background: #f7f4ec;
-  color: var(--green);
+  background: var(--color-background);
+  color: var(--color-text);
   transition: transform 220ms ease;
 }
 
-.header[data-hidden="true"] { transform: translateY(-100%); }
+.header[data-hidden="true"] {
+  transform: translateY(-100%);
+}
+
 .header:has(dialog[open]),
-.header:has(:focus-visible) { transform: translateY(0); }
+.header:has(:focus-visible) {
+  transform: translateY(0);
+}
 
 .headerContent {
   height: 100%;
@@ -20,18 +25,93 @@
   gap: 24px;
 }
 
-.brand { display: inline-flex; align-items: center; gap: 16px; width: fit-content; white-space: nowrap; font: 400 36px/1 var(--font-serif), serif; }
-.leaf { width: 14px; height: 25px; flex-shrink: 0; border-radius: 50%; background: #c66b43; transform: rotate(28deg); }
-.desktopNav { display: flex; align-items: center; gap: 36px; font-size: 14px; }
-.desktopNav a { padding-block: 12px; }
-.desktopNav a:hover, .mobileNav a:hover { color: var(--clay); }
-.customLink, .drawerCustomLink { display: inline-flex; align-items: center; justify-content: center; border: 1px solid currentColor; border-radius: 100px; padding: 16px 26px; font-size: 14px; font-weight: 500; white-space: nowrap; }
-.customLink { justify-self: end; }
-.customLink:hover, .drawerCustomLink:hover { background: var(--green); color: #f7f4ec; }
-.menuButton, .closeButton { align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; color: inherit; cursor: pointer; }
-.menuButton { display: none; justify-self: end; }
-.closeButton { display: inline-flex; flex-shrink: 0; }
-.header a:focus-visible, .header button:focus-visible { outline: 2px solid var(--clay); outline-offset: 4px; }
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  white-space: nowrap;
+  font: 400 36px/1 var(--font-serif), serif;
+}
+
+.brandLogo {
+  display: block;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  background-color: currentColor;
+  -webkit-mask: url("/brand/petite-terre-transparent.png") center / contain no-repeat;
+  mask: url("/brand/petite-terre-transparent.png") center / contain no-repeat;
+  /* mask: url("/brand/petite-terre-white-transparent.svg") center / contain no-repeat; */
+  mask-mode: alpha;
+}
+
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  font-size: 14px;
+}
+
+.desktopNav a {
+  padding-block: 12px;
+}
+
+.desktopNav a:hover,
+.mobileNav a:hover {
+  color: var(--color-accent);
+}
+
+.customLink,
+.drawerCustomLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid currentColor;
+  border-radius: 100px;
+  padding: 16px 26px;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.customLink {
+  justify-self: end;
+}
+
+.customLink:hover,
+.drawerCustomLink:hover {
+  background: var(--color-primary-hover);
+  color: var(--color-text-inverse);
+}
+
+.menuButton,
+.closeButton {
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.menuButton {
+  display: none;
+  justify-self: end;
+}
+
+.closeButton {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.header a:focus-visible,
+.header button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
 
 .drawer {
   position: fixed;
@@ -44,32 +124,97 @@
   padding: 24px;
   border: 0;
   overflow-y: auto;
-  background: #f7f4ec;
-  color: var(--green);
+  background: var(--color-background);
+  color: var(--color-text);
   transform: translateX(100%);
   transition: transform 280ms ease, display 280ms allow-discrete, overlay 280ms allow-discrete;
 }
-.drawer[open] { transform: translateX(0); }
-.drawer::backdrop { background: rgb(0 0 0 / 35%); opacity: 0; transition: opacity 280ms ease, display 280ms allow-discrete, overlay 280ms allow-discrete; }
-.drawer[open]::backdrop { opacity: 1; }
-@starting-style {
-  .drawer[open] { transform: translateX(100%); }
-  .drawer[open]::backdrop { opacity: 0; }
+
+.drawer[open] {
+  transform: translateX(0);
 }
-.drawerHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.drawerTitle { font: 400 22px/1.3 var(--font-serif), serif; }
-.mobileNav { display: flex; flex-direction: column; margin-block: 40px; }
-.mobileNav a { padding-block: 20px; border-bottom: 1px solid #d8ded2; font-size: 19px; }
-.drawerCustomLink { width: 100%; }
+
+.drawer::backdrop {
+  background: var(--color-overlay);
+  opacity: 0;
+  transition: opacity 280ms ease, display 280ms allow-discrete, overlay 280ms allow-discrete;
+}
+
+.drawer[open]::backdrop {
+  opacity: 1;
+}
+
+@starting-style {
+  .drawer[open] {
+    transform: translateX(100%);
+  }
+
+  .drawer[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+.drawerHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.drawerTitle {
+  font: 400 22px/1.3 var(--font-serif), serif;
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+  margin-block: 40px;
+}
+
+.mobileNav a {
+  padding-block: 20px;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 19px;
+}
+
+.drawerCustomLink {
+  width: 100%;
+}
 
 @media (max-width: 1200px) {
-  .header { height: 70px; }
-  .headerContent { grid-template-columns: 1fr auto; }
-  .brand { font-size: clamp(24px, 5.2vw, 32px); gap: 12px; }
-  .leaf { width: 11px; height: 20px; }
-  .desktopNav, .customLink { display: none; }
-  .menuButton { display: inline-flex; }
+  .header {
+    height: 70px;
+  }
+
+  .headerContent {
+    grid-template-columns: 1fr auto;
+  }
+
+  .brand {
+    font-size: clamp(24px, 5.2vw, 32px);
+    gap: 12px;
+  }
+
+  .brandLogo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .desktopNav,
+  .customLink {
+    display: none;
+  }
+
+  .menuButton {
+    display: inline-flex;
+  }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .header, .drawer, .drawer::backdrop { transition: none; }
+
+  .header,
+  .drawer,
+  .drawer::backdrop {
+    transition: none;
+  }
 }
