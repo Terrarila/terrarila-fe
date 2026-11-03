@@ -120,3 +120,8 @@ Route duy nhất: `/products/[slug]`, đọc `GET /v1/products/:slug` (published
 - `src/app/products/[slug]/`: page, layout, metadata, loading, not-found và error/retry.
 
 Trang hiển thị đúng ảnh/mô tả/giá/tình trạng từ API. Giá null giữ thông báo shop xác nhận, không đổi thành 0. Ảnh highlight được thêm cuối gallery nếu chưa có trong danh sách ảnh. Related tối đa 4 sản phẩm available, loại chính sản phẩm đang xem; không suy đoán độ tương đồng theo nhóm khi contract chưa có nhóm. Related lỗi/rỗng có thông báo riêng. Chưa thêm checkout, kích thước ngoài mô tả API hay nội dung chăm sóc tự đặt.
+
+
+## Vercel Preview preparation
+
+Next.js / eslint-config-next are pinned to 16.4.4. Use Node 24.x. Set server-only TERRALA_API_URL to BE Preview, TERRALA_ASSET_URL to the public Blob origin; /assets/... paths are preserved. Optional TERRALA_API_BYPASS_SECRET is forwarded only server-to-server to a protected BE Preview, never to the browser. Set TERRALA_SITE_ORIGIN for the actual environment if used; do not reuse a production origin on another Preview. See ../terrarila-be/docs/VERCEL-PREVIEW.md for account resources, migrations and full-flow verification. A passing local build is not a live cloud deployment.

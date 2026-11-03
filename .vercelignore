@@ -1,0 +1,12 @@
+.git/
+node_modules/
+.next/
+.next-build/
+.next-ui/
+.next-brand-check/
+.env*
+!.env.example
+coverage/
+*.pem
+*.key
+*.log
