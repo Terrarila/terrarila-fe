@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default function Home() {
   return <>
-    <SiteHeader />
+    <SiteHeader heroId="journey" />
     <main id="top">
       <HeroSection><HeroStageContent /></HeroSection>
       <PortfolioSection />

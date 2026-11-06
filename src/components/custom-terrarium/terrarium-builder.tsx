@@ -40,7 +40,12 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
 
   return <main className={styles.builder}>
     <aside className={styles.previewPanel} aria-label="Minh hoạ bể của bạn">
-      <div className={styles.previewTop}><Link href="/" className={styles.brand}><span aria-hidden="true" />Petite Terre</Link><Link href="/" className={styles.back}>← Về trang chủ</Link></div>
+      <div className={styles.previewTop}>
+        <Link href="/" className={styles.brand} aria-label="Petite Terre — về trang chủ">
+          <span className={styles.brandLogo} aria-hidden="true" />Petite Terre
+        </Link>
+        <Link href="/" className={styles.back}>← Về trang chủ</Link>
+      </div>
       <div className={styles.previewHeading}>
         <p className={styles.eyebrow}>THIẾT KẾ THEO Ý BẠN</p>
         {/* <h1>Một góc xanh.<br />Mang dấu ấn của bạn.</h1> */}

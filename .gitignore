@@ -1,5 +1,7 @@
 node_modules/
 .next/
+# Isolated local dev/build caches
+.next-*/
 .next-build/
 .next-brand-check/
 out/

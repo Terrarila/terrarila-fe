@@ -687,3 +687,6 @@
 .cardDetails:focus-visible { outline: 3px solid var(--color-focus); outline-offset: 5px; }
 .portfolio { --color-focus: var(--color-text-inverse); }
 .portfolio .outline:hover { color: var(--color-text); }
+.supportLinks { display: flex; flex-wrap: wrap; gap: 16px 28px; margin-bottom: 28px; color: var(--color-text-inverse); font-size: 13px; }
+.supportLinks a { text-underline-offset: 5px; }
+.supportLinks a:hover { text-decoration: underline; }

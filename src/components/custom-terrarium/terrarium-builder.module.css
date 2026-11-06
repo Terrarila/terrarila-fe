@@ -2,7 +2,7 @@
 .previewPanel { position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column; padding: 32px 48px 24px; background: var(--color-surface-alt); min-width: 0; }
 .previewTop { display: flex; justify-content: space-between; align-items: center; gap: 20px; }
 .brand { display: flex; align-items: center; gap: 12px; white-space: nowrap; font: clamp(22px, 2.5vw, 32px)/1 var(--font-serif), serif; }
-.brand span { width: 11px; height: 21px; border-radius: 50%; transform: rotate(28deg); background: var(--color-accent); }
+.brandLogo { display: block; width: 64px; height: 64px; flex-shrink: 0; background-color: currentColor; -webkit-mask: url("/brand/petite-terre-transparent.png") center / contain no-repeat; mask: url("/brand/petite-terre-transparent.png") center / contain no-repeat; mask-mode: alpha; }
 .back { font-size: 12px; }
 .previewHeading { margin-top: 42px; }
 .eyebrow { font-size: 10px; letter-spacing: 2px; margin: 0 0 16px; line-height: 1.6; }
@@ -78,6 +78,7 @@
   .builder { grid-template-columns: 1fr; }
   .previewPanel { height: 46dvh; min-height: 280px; padding: 14px 24px; z-index: 2; border-bottom: 1px solid var(--color-border); }
   .brand { font-size: clamp(20px, 5vw, 27px); }
+  .brandLogo { width: 36px; height: 36px; }
   .previewHeading { margin-top: 14px; }
   .previewHeading .eyebrow, .previewHeading p:last-child, .previewNote { display: none; }
   .previewHeading h1 { font-size: 21px; letter-spacing: 0; margin: 0; }

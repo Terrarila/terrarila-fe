@@ -114,6 +114,7 @@ export function SiteFooter() {
           <p>Hiện nhận giao trong TP. Hồ Chí Minh.</p>
         </div>
       </div>
+      <nav aria-label="Hỗ trợ khách hàng" className={styles.supportLinks}><Link href="/tra-cuu">Tra cứu yêu cầu</Link><Link href="/gop-y">Góp ý website</Link></nav>
       <p className={styles.copyright}>© Petite Terre&nbsp;&nbsp; · &nbsp;&nbsp;Terrarium thủ công&nbsp;&nbsp; · &nbsp;&nbsp;Chăm sóc &amp; tận tâm</p>
     </div>
   </footer>;
