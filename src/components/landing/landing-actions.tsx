@@ -1,22 +1,26 @@
 "use client";
 
 import { useId, useRef, type ReactNode } from "react";
+import { ContactIcon } from "@/components/shared/contact-icon";
+import contactStyles from "@/components/shared/contact-icon.module.css";
 import styles from "./landing-sections.module.css";
 
 type ActionVariant = "outline" | "forest" | "light" | "clay";
 type ModalActionProps = {
-  label: string;
+  label: ReactNode;
+  ariaLabel?: string;
+  buttonClassName?: string;
   title: string;
   children: ReactNode;
   variant?: ActionVariant;
 };
 
-export function ModalAction({ label, title, children, variant = "outline" }: ModalActionProps) {
+export function ModalAction({ label, title, children, variant = "outline", ariaLabel, buttonClassName }: ModalActionProps) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
 
   return <>
-    <button className={`${styles.action} ${styles[variant]}`} type="button" aria-haspopup="dialog" onClick={() => dialog.current?.showModal()}>{label}</button>
+    <button className={buttonClassName ?? `${styles.action} ${styles[variant]}`} aria-label={ariaLabel} type="button" aria-haspopup="dialog" onClick={() => dialog.current?.showModal()}>{label}</button>
     <dialog ref={dialog} className={styles.dialog} aria-labelledby={titleId} onClick={(event) => {
       if (event.target === event.currentTarget) {
         const bounds = event.currentTarget.getBoundingClientRect();
@@ -32,16 +36,18 @@ export function ModalAction({ label, title, children, variant = "outline" }: Mod
   </>;
 }
 
-export function ContactAction({ channel, href, variant = "forest", product }: {
-  channel: "Messenger" | "Zalo";
+export function ContactAction({ channel, href, variant = "outline", product }: {
+  channel: "Instagram" | "Messenger";
   href?: string;
   variant?: ActionVariant;
   product?: string;
 }) {
-  const label = `${channel} →`;
-  if (href) return <a className={`${styles.action} ${styles[variant]}`} href={href} target="_blank" rel="noopener noreferrer" aria-label={product ? `Hỏi mua ${product} qua ${channel}` : `Liên hệ Petite Terre qua ${channel}`}>{label}</a>;
+  const label = product ? `Hỏi mua ${product} qua ${channel}` : `Liên hệ Petite Terre qua ${channel}`;
+  const className = `${contactStyles.contactIcon} ${variant === "light" ? contactStyles.light : ""}`;
+  const icon = <ContactIcon channel={channel} />;
+  if (href) return <a className={className} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} title={channel}>{icon}</a>;
 
-  return <ModalAction label={label} title={`Liên hệ qua ${channel}`} variant={variant}>
+  return <ModalAction label={icon} ariaLabel={label} buttonClassName={className} title={`Liên hệ qua ${channel}`}>
     <p className={styles.dialogText}>Thông tin liên hệ của Petite Terre đang được cập nhật. Vui lòng quay lại sau.</p>
   </ModalAction>;
 }

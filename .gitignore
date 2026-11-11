@@ -40,3 +40,8 @@ Thumbs.db
 *.swo
 
 .next-ui/
+
+# Local validation reports and agent instructions
+VALIDATION.md
+validation.md
+AGENTS.md

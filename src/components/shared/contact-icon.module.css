@@ -1,0 +1,55 @@
+.contactIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 48px;
+  width: 48px;
+  height: 48px;
+  padding: 10px;
+  border: 1px solid var(--color-border-control);
+  border-radius: 50%;
+  color: var(--color-text);
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition:
+    background-color 160ms,
+    border-color 160ms;
+}
+.light {
+  color: var(--color-text-inverse);
+  border-color: currentColor;
+}
+.contactIcon svg {
+  display: block;
+  flex-shrink: 0;
+}
+.monochrome {
+  opacity: 1;
+  transition: opacity 160ms;
+}
+.signature {
+  opacity: 0;
+  transition: opacity 160ms;
+}
+.contactIcon:is(:hover, :focus-visible) {
+  background: #fff;
+  border-color: transparent;
+}
+.contactIcon:is(:hover, :focus-visible) .monochrome {
+  opacity: 0;
+}
+.contactIcon:is(:hover, :focus-visible) .signature {
+  opacity: 1;
+}
+.contactIcon:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .contactIcon,
+  .monochrome,
+  .signature {
+    transition: none;
+  }
+}

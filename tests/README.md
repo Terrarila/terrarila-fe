@@ -17,7 +17,7 @@ npm run test:logic       # Existing node:test suite
 
 `unit/builder-fixture.tsx` contains isolated API-shaped test data; its prices and rules do not configure the store's catalog. Each test gets a fresh Redux store, DOM and HTTP mock. No running BE or database is needed for the component suite.
 
-Related logic tests remain in `design.test.ts`, `glass-sizes.test.ts`, `presets.test.ts` and `catalog.test.ts`, including Redux Persist restoration and catalog reconciliation. The full logic suite also reads the real GLB from the sibling `terrarila-be` checkout.
+Related logic tests remain in `design.test.ts`, `glass-sizes.test.ts`, `presets.test.ts` and `catalog.test.ts`, including Redux Persist restoration and catalog reconciliation. The full logic suite reads the real GLB from FE `public/terrarium-current.glb`.
 
 Vitest uses jsdom. These tests do not verify browser layout, image loading or the async server page's catalog fetch. Those require runtime/integration checks.
 

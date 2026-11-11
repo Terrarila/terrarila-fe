@@ -1,4 +1,4 @@
-import { shopContacts } from "@/lib/shop-contacts";
+import { shopSocialContacts } from "@/lib/shop-contacts";
 import { ContactAction } from "@/components/landing/landing-actions";
 import styles from "@/components/landing/landing-sections.module.css";
 
@@ -9,18 +9,16 @@ export function ContactActions({
   light?: boolean;
   product?: string;
 }) {
-  const contacts = shopContacts();
+  const contacts = shopSocialContacts();
   return (
     <div className={styles.contactActions}>
-      {(["Messenger", "Zalo"] as const).map((channel) => (
+      {(["Instagram", "Messenger"] as const).map((channel) => (
         <ContactAction
           key={channel}
           channel={channel}
           href={contacts.find((contact) => contact.label === channel)?.href}
           product={product}
-          variant={
-            light ? "light" : channel === "Messenger" ? "forest" : "outline"
-          }
+          variant={light ? "light" : "outline"}
         />
       ))}
     </div>

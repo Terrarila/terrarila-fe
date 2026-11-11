@@ -8,7 +8,7 @@ import { prepareMaterials } from "./model-materials";
 import type { Timeline } from "../hero/timeline";
 
 export function TerrariumModel({ timeline, onReady }: { timeline: Timeline; onReady: () => void }) {
-  const gltf = useGLTF("/assets/terrarium-current.glb");
+  const gltf = useGLTF("/terrarium-current.glb");
   const invalidate = useThree((state) => state.invalidate);
   const last = useRef(-1);
   const model = useMemo(() => {

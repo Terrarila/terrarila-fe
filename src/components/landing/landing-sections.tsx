@@ -65,7 +65,7 @@ export async function AvailableTerrariumsSection() {
   try { products = (await loadProducts()).map(productCard); } catch { failed = true; }
   return <section id="collection" className={`${styles.section} ${styles.collection}`} aria-labelledby="collection-title">
     <div className={`container ${styles.sectionContent}`}>
-      <SectionHeading id="collection-title" eyebrow="BỂ CÓ SẴN" title={<>Chọn một góc xanh<br />để mang về.</>} description="Thích một bể? Nhắn shop qua Messenger hoặc Zalo để đặt mua." />
+      <SectionHeading id="collection-title" eyebrow="BỂ CÓ SẴN" title={<>Chọn một góc xanh<br />để mang về.</>} description="Thích một bể? Nhắn shop qua Instagram hoặc Messenger để đặt mua." />
       {products.length ? <TerrariumGrid items={products.slice(0, 4)} /> : <p>{failed ? "Chưa tải được bộ sưu tập. Vui lòng thử lại sau." : "Shop đang cập nhật các bể có sẵn."}</p>}
       {products.length ? <ModalAction label="Xem bộ sưu tập có sẵn →" title="Bộ sưu tập có sẵn" variant="forest">
         <TerrariumGrid items={products} gallery />
