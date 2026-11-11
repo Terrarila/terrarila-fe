@@ -44,7 +44,13 @@ export async function PortfolioSection() {
   try { portfolio = (await loadPortfolio()).map(portfolioCard); } catch { failed = true; }
   return <section id="portfolio" className={`${styles.section} ${styles.portfolio}`} aria-labelledby="portfolio-title">
     <div className={`container ${styles.sectionContent}`}>
-      <SectionHeading id="portfolio-title" eyebrow="NHỮNG BỂ ĐÃ LÀM" title={<>Mỗi bể,<br />một thế giới riêng.</>} description="Từ một góc rừng phủ rêu đến một triền đá nhỏ — xem những bố cục đã được Petite Terre chăm chút." split />
+      <SectionHeading
+        id="portfolio-title"
+        eyebrow="NHỮNG BỂ ĐÃ LÀM"
+        title={<>Mỗi bể,<br />một thế giới riêng.</>}
+        description="Những bể đã được Petite Terre chăm chút."
+        split
+      />
       {portfolio.length ? <TerrariumGrid items={portfolio.slice(0, 4)} /> : <p>{failed ? "Chưa tải được Portfolio. Vui lòng thử lại sau." : "Shop đang cập nhật những bể đã làm."}</p>}
       {portfolio.length ? <ModalAction label="Xem tất cả bể đã làm →" title="Những bể đã làm">
         <TerrariumGrid items={portfolio} gallery />

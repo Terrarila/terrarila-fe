@@ -12,7 +12,7 @@ export default function Home() {
     <main id="top">
       <HeroSection><HeroStageContent /></HeroSection>
       <PortfolioSection />
-      <AvailableTerrariumsSection />
+      {/* <AvailableTerrariumsSection /> */}
       <CustomTerrariumSection />
       {/* <AboutTerralaSection /> */}
     </main>
