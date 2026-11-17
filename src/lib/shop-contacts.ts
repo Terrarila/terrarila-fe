@@ -1,5 +1,7 @@
 import "server-only";
 
+const DEFAULT_MESSENGER_URL = "https://m.me/1417505371445202";
+
 type Contact = { label: string; href: string | undefined };
 function configuredContacts(contacts: Contact[]) {
   return contacts.filter(
@@ -15,7 +17,7 @@ function configuredContacts(contacts: Contact[]) {
 }
 export function shopContacts() {
   return configuredContacts([
-    { label: "Messenger", href: process.env.TERRALA_MESSENGER_URL },
+    { label: "Messenger", href: process.env.TERRALA_MESSENGER_URL || DEFAULT_MESSENGER_URL },
     { label: "Zalo", href: process.env.TERRALA_ZALO_URL },
   ]);
 }
@@ -27,6 +29,6 @@ export function shopSocialContacts() {
         process.env.TERRALA_INSTAGRAM_URL ||
         "https://www.instagram.com/petiteterra_/",
     },
-    { label: "Messenger", href: process.env.TERRALA_MESSENGER_URL },
+    { label: "Messenger", href: process.env.TERRALA_MESSENGER_URL || DEFAULT_MESSENGER_URL },
   ]);
 }
