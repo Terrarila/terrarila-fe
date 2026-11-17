@@ -121,7 +121,10 @@ export function SiteFooter() {
         </div>
       </div>
       <nav aria-label="Hỗ trợ khách hàng" className={styles.supportLinks}><Link href="/tra-cuu">Tra cứu yêu cầu</Link><Link href="/gop-y">Góp ý website</Link></nav>
-      <p className={styles.copyright}>© Petite Terre&nbsp;&nbsp; · &nbsp;&nbsp;Terrarium thủ công&nbsp;&nbsp; · &nbsp;&nbsp;Chăm sóc &amp; tận tâm</p>
+        <p className={styles.copyright}>
+          <span>© Petite Terre&nbsp;&nbsp; · &nbsp;&nbsp;Terrarium thủ công&nbsp;&nbsp; · &nbsp;&nbsp;Chăm sóc &amp; tận tâm</span>
+          <span>Part of <a href={"https://www.49eternal.com"} target="_blank" rel="noopener noreferrer" aria-label={"49eternal"} title={"49eternal"} style={{ fontWeight: "bold" }}>49eternal.com</a></span>
+        </p>
     </div>
   </footer>;
 }

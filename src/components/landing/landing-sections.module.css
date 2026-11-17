@@ -450,6 +450,9 @@
   margin-top: 32px !important;
   font-size: 10px;
   color: var(--color-text-inverse-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Native dialogs add image viewing/contact actions without new page routes. */
@@ -648,6 +651,7 @@
 
   .copyright {
     line-height: 1.8 !important;
+    flex-direction: column;
   }
 
   .dialog {
