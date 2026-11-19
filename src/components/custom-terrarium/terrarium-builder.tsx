@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
-import { presetSelection, sameSelection } from "./design-presets";
+import { DesignPresets } from "./design-presets-section";
 import { useState } from "react";
 import { useDesignDispatch, useDesignSelector } from "@/store/design-provider";
 import { chooseGlassSize, chooseMaterial, applyPreset, changeNote, resetDesign } from "@/store/design-slice";
@@ -87,47 +86,11 @@ export function TerrariumBuilder({ contacts, catalog }: { contacts: { label: str
         <p>Chọn những điều bạn thích. Bạn có thể đổi lựa chọn ở bất kỳ bước nào.</p>
         <p className={styles.stockNote}>Các dáng bể trong bộ sưu tập Petite Terre. Shop sẽ xác nhận tình trạng bể, cây và vật liệu khi tư vấn.</p> */}
       </div>
-      <fieldset className={styles.step}>
-        <legend>
-          <span className={styles.stepNumber}>
-            KHÔNG BẮT BUỘC
-          </span>
-          <span className={styles.stepTitle}>Chọn bể mẫu</span>
-        </legend>
-        <p className={styles.stepDescription}>
-          Bắt đầu từ một mẫu có sẵn hoặc tự chọn từ Bước 1. Chọn mẫu sẽ thay toàn bộ vật liệu, giữ ghi chú; bạn có thể chỉnh tiếp bên dưới.
-        </p>
-        {!catalog.presetsReady ? <p className={styles.stepDescription} role="status">Chưa tải được bể mẫu. Bạn vẫn có thể tự chọn từng vật liệu bên dưới.</p> : !catalog.presets.length ? <p className={styles.stepDescription}>Shop đang chuẩn bị thêm bể mẫu. Bạn có thể tự chọn từ Bước 1.</p> : null}
-        <div className={styles.options}>{catalog.presets.map(preset => {
-          const recipe = presetSelection(preset, catalog);
-          const selected = recipe !== null && sameSelection(selection, recipe);
-          return <button key={preset.id} type="button" className={styles.presetCard} disabled={!recipe} aria-pressed={selected} onClick={() => {
-            if (!recipe) return;
-            dispatch(applyPreset(recipe)); setShowForm(false); setStatus(`Đã áp dụng ${preset.name}. Bạn có thể chỉnh vật liệu bên dưới.`);
-          }}>
-            <span className={styles.presetImage}>
-              <Image
-                src={preset.imageUrl}
-                unoptimized={/^https?:\/\//.test(preset.imageUrl)}
-                alt={preset.name}
-                fill
-                sizes="(max-width: 760px) calc(100vw - 48px), (max-width: 1200px) 40vw, 25vw"
-              />
-            </span>
-            <span className={styles.presetCopy}>
-              <strong>{preset.name}</strong>
-              {preset.isDemo ? <span className={styles.presetBadge}>Mẫu demo</span> : null}
-              <span>{preset.description}</span>
-              <span>
-                {recipe ? preset.materials.map(material => material.name).join(" · ") : "Mẫu tạm chưa dùng được với danh mục hiện tại."}
-              </span>
-              <span>
-                {selected ? "✓ Đang dùng cấu hình này" : recipe ? "Dùng mẫu này →" : "Tạm chưa thể chọn"}
-              </span>
-            </span>
-          </button>;
-        })}</div>
-      </fieldset>
+      <DesignPresets catalog={catalog} selection={selection} onApply={(recipe, name) => {
+        dispatch(applyPreset(recipe));
+        setShowForm(false);
+        setStatus(`Đã áp dụng ${name}. Bạn có thể chỉnh vật liệu bên dưới.`);
+      }} />
       {!catalog.ready ? <p role="status">Chưa tải được danh mục vật liệu. Lựa chọn đã lưu vẫn được giữ; vui lòng tải lại trang để thử kết nối.</p> : steps.length === 0 ? <p role="status">Shop chưa công bố danh mục vật liệu.</p> : null}
       {steps.map((step, index) => <fieldset key={step.key} className={styles.step} disabled={step.key !== "glass" && !selection.glass}>
         <legend>
