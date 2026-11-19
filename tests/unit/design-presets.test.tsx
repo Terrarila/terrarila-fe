@@ -83,10 +83,10 @@ describe("Portfolio template selection", () => {
       screen.getByText(/Shop đang chuẩn bị công thức vật liệu/),
     ).toBeInTheDocument();
   });
-  it("uses a carousel for more than four API templates", () => {
+  it.each([3, 4, 6])("uses a carousel for %i API templates", (count) => {
     render(
       <DesignPresets
-        catalog={setup(6)}
+        catalog={setup(count)}
         selection={createEmptySelection()}
         onApply={vi.fn()}
       />,
@@ -94,7 +94,20 @@ describe("Portfolio template selection", () => {
     expect(
       screen.getByRole("region", { name: "Bể mẫu đã làm" }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("button")).toHaveLength(6);
+    expect(screen.getAllByRole("button")).toHaveLength(count);
+  });
+  it.each([1, 2])("keeps %i API templates in the grid", (count) => {
+    render(
+      <DesignPresets
+        catalog={setup(count)}
+        selection={createEmptySelection()}
+        onApply={vi.fn()}
+      />,
+    );
+    expect(
+      screen.queryByRole("region", { name: "Bể mẫu đã làm" }),
+    ).not.toBeInTheDocument();
+    expect(screen.getAllByRole("button")).toHaveLength(count);
   });
   it("keeps material selection available when the template API is unavailable", () => {
     const catalog = { ...setup(), presetsReady: false, presets: [] };

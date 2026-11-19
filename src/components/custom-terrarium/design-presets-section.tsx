@@ -55,7 +55,7 @@ export function DesignPresets({ catalog, selection, onApply }: Props) {
           Shop đang chuẩn bị thêm bể mẫu. Bạn có thể tự chọn từ Bước 1.
         </p>
       ) : null}
-      {cards.length > 4 ? (
+      {cards.length > 2 ? (
         <PresetCarousel items={cards} />
       ) : (
         <div className={styles.options}>
